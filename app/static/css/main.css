@@ -1,26 +1,89 @@
 /* app/static/css/main.css */
+:root{
+    --main-color:rgb(7, 3, 129);
+    --black:#13131a;
+    --bg:#f4f4f4;
+    --highlight:rgb(209, 206, 206);
+    --border:1rem solid rgba(255, 255, 255, .3);
+    --header: #27348B;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    box-sizing: border-box;
+    outline:none;
+    border:none;
+    text-decoration:none;
+    transition: .2s linear;
 }
 
 header {
-    background-color: #4CAF50;
+    background:var(--header);
     color: white;
-    padding: 10px 0;
+    display: flex;
     text-align: center;
+    align-items: center;
+    padding:5px 5px;
 }
 
-nav a {
+.headerLogo img{
+    height:30px;
+}
+
+header h1{
+    font-size: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-left: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+#menu-button{
     color: white;
-    margin: 0 15px;
-    text-decoration: none;
+    font-size: 25px;
+    margin-right: 30px;
+    cursor:pointer;
 }
 
-main {
-    padding: 20px;
+.header #menu-button:hover{
+    color: var(--highlight);
+}
+
+.top-navigation a{
+    color: white;
+    margin: 0 50px;
+    text-decoration: none;
+    text-transform: uppercase;
+    display:block;
+    margin:20px;
+    padding:5px;
+    font-size:15px;
+}
+
+.header .top-navigation a:hover{
+    color:var(--highlight);
+    border-bottom: 2px solid var(--highlight);
+    padding-bottom: 5px;
+}
+
+.top-navigation{
+    display:none;
+    position: absolute;
+    background-color: var(--header);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width:200px;
+    top:40px; right: -100%;
+}
+
+.top-navigation.active{
+    display:block;
+    right:0;
 }
 
 footer {
