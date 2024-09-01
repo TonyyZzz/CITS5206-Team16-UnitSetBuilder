@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Set Checklist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/unit_set.css') }}">
+    <script src="{{ url_for('static', filename='js/unit_set.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="banner">
+                <img src="{{ url_for('static', filename='image/UWAlogo.png') }}" alt="UWA Logo" class="logo">
+            </div>
+            <h1>Unit Set checklist</h1>
+            <h2>Master of Information Technology: Artificial Intelligence (AI) Stream</h2>
+        </header>
+        
+        <div class="group-selector">
+            <p>Select the Group you want to add:</p>
+            <button class="group-btn core">Core</button>
+            <button class="group-btn conversion">Conversion</button>
+            <button class="group-btn option">Option</button>
+            <button class="group-btn customised">Customised</button>
+        </div>
+
+        <div class="instructions">
+            <p>Drag this icon   <img src="{{ url_for('static', filename='image/drag_group.png') }}" alt="Drag Icon" class="icon">   to adjust the order</p>
+        </div>
+
+        <div class="unit-set">
+            <div class="unit-group core-unit">
+                <div class="group-header">
+                    <h3>Core Unit</h3>
+                    <div class="group-icons">
+                        <img src="{{ url_for('static', filename='image/drag_group.png') }}" alt="Drag Group Icon" class="drag-group-icon"  draggable="true">
+                        <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
+                    </div>
+                </div>
+                <p>Take all units from this group (24 points)</p>
+                <!-- Core Units -->
+                <div class="unit" id="unit-1"  draggable="true">
+                    <span class="unit-name">CITS1401: Computational Thinking with Python</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="fav-btn" data-fav="false"><img src="{{ url_for('static', filename='image/unstar.png') }}" alt="Star Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-1"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-2"  draggable="true">
+                    <span class="unit-name">CITS1402: Relational Database Management Systems</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="fav-btn" data-fav="true"><img src="{{ url_for('static', filename='image/unstar.png') }}" alt="Star Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-2"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-3"  draggable="true">
+                    <span class="unit-name">CITS4401: Software Requirements and Design</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="fav-btn" data-fav="true"><img src="{{ url_for('static', filename='image/unstar.png') }}" alt="Star Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-3"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-4"  draggable="true">
+                    <span class="unit-name">CITS5206: Information Technology Capstone Project</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="fav-btn" data-fav="true"><img src="{{ url_for('static', filename='image/star.png') }}" alt="Star Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-4"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="unit-group conversion-unit">
+                <div class="group-header">
+                    <h3>Conversion Unit</h3>
+                    <div class="group-icons">
+                        <img src="{{ url_for('static', filename='image/drag_group.png') }}" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+                        <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
+                    </div>
+                </div>
+                <p>Take all units from this group (24 points)</p>
+                <!-- Conversion Units -->
+                <div class="unit" id="unit-5"  draggable="true">
+                    <span class="unit-name">CITS1003: Introduction to Cybersecurity</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-5"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-6"  draggable="true">
+                    <span class="unit-name">PHIL4100: Ethics and Critical Thinking</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-6"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="unit-group option-unit">
+                <div class="group-header">
+                    <h3>Option Unit</h3>
+                    <div class="group-icons">
+                        <img src="{{ url_for('static', filename='image/drag_group.png') }}" alt="Drag Group Icon" class="drag-group-icon"  draggable="true">
+                        <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
+                    </div>
+                </div>
+                <p>Take all units from this group (24 points)</p>
+                <!-- Option Units -->
+                <div class="unit" id="unit-7"  draggable="true">
+                    <span class="unit-name">CITS4012: Natural Language Processing</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-7"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-8"  draggable="true">
+                    <span class="unit-name">CITS5505: Agile Web Development</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-8"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-9"  draggable="true">
+                    <span class="unit-name">CITS5508: Machine Learning</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-9"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-10"  draggable="true">
+                    <span class="unit-name">CITS5017: Deep Learning</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-10"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-11"  draggable="true">
+                    <span class="unit-name">CITS4404: Artificial Intelligence and Adaptive Systems</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-11"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="unit-group customised-unit">
+                <div class="group-header">
+                    <h3>Customised Unit</h3>
+                    <div class="group-icons">
+                        <img src="{{ url_for('static', filename='image/drag_group.png') }}" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+                        <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
+                    </div>
+                </div>
+                <p>Take all units from this group (24 points)</p>
+                <!-- Customised Units -->
+                <div class="unit" id="unit-12"  draggable="true">
+                    <span class="unit-name">CITS4401: Software Requirements and Design</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-12"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-13"  draggable="true">
+                    <span class="unit-name">CITS5505: Agile Web Development</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-13"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                <div class="unit" id="unit-14"  draggable="true">
+                    <span class="unit-name">PHIL4100: Ethics and Critical Thinking</span>
+                    <span class="unit-actions">
+                        <button class="move-btn"><img src="{{ url_for('static', filename='image/drag_unit.png') }}" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-14"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addUnitModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Add Unit</h2>
+            <input type="text" placeholder="   Search for a unit" class="search-input">
+            <button class="save-btn">Save</button>
+        </div>
+    </div>
+</body>
+</html>
+ 
