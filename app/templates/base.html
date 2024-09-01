@@ -4,16 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
     <title>{% block title %}Unit Set Builder{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="main.js"></script>  
 </head>
 <body>
-    <header>
+    <!-- In the header section, adding a university logo and App Name -->
+    <header class="header">
+        <a href="#" class="headerLogo" id="universityLogo">
+            <img src="../static/images/UWAlogo.png" alt="UniversityLogo">
+        </a>
         <h1>Unit Set Builder</h1>
-        <nav>
-            <a href="{{ url_for('main.index') }}">Home</a> |
+        <nav class="top-navigation">
+            <a href="{{ url_for('main.index') }}">Home</a>
             <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('main.grouping') }}">Groups</a>
         </nav>
+        <!-- Search and menu icon in the header -->
+        <div class="fas fa-bars" id="menu-button"></div>     
     </header>
     <main>
         {% block content %}{% endblock %}
