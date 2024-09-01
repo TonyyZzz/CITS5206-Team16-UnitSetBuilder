@@ -9,7 +9,6 @@ db = SQLAlchemy()
 # Initialize the migration object
 migrate = Migrate()
 
-
 def create_app(config_name):
     # Create the Flask application instance
     app = Flask(__name__, instance_relative_config=True)
@@ -28,6 +27,9 @@ def create_app(config_name):
 
     from .routes.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
+
+    from .routes.search import search as search_blueprint  # Register the search blueprint
+    app.register_blueprint(search_blueprint)
 
     with app.app_context():
         from . import models
