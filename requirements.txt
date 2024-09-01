@@ -7,7 +7,7 @@ Flask-Login==0.6.2
 Flask-Bootstrap==3.3.7.1
 
 # Database driver (example for PostgreSQL)
-psycopg2-binary==2.9.7
+psycopg2-binary==2.9.9
 
 # For managing environment variables
 python-dotenv==1.0.0
