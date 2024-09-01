@@ -1,0 +1,309 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.banner {
+    background-color: #2A3486;
+    padding: 10px;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 10px 0;
+    color: #2A3486;
+}
+
+header h2 {
+    font-size: 1.5em;
+    color: #2A3486;
+}
+
+.group-selector {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.group-selector p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #2A3486;
+}
+
+.group-selector .group-btn {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+}
+
+.group-btn.core {
+    background-color: #CBCFED;
+    color: #2A3486;
+}
+
+.group-btn.conversion {
+    background-color: #F2D4DC;
+    color: #2A3486;
+}
+
+.group-btn.option {
+    background-color: #FDF4CB;
+    color: #2A3486;
+}
+
+.group-btn.customised {
+    background-color: #C8E9FF;
+    color: #2A3486;
+}
+
+.instructions {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2A3486;
+}
+
+.icon {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #666;
+}
+
+.unit-set {
+    margin-top: 20px;
+    
+}
+
+.unit-group {
+    background-color: #eef;
+    padding: 40px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    position: relative;
+    /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); */
+}
+
+.unit-group h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #2A3486;
+}
+
+.unit-group p {
+    margin: 10px 0;
+    color: #2A3486;
+}
+
+.core-unit {
+    background-color: #CBCFED;
+}
+
+.conversion-unit {
+    background-color: #F2D4DC;
+}
+
+.option-unit {
+    background-color: #FDF4CB;
+}
+
+.customised-unit {
+    background-color: #C8E9FF;
+}
+
+.unit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    color: #2A3486;
+}
+
+.unit-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+.add-unit-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #d1e7dd;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+
+.unit-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.unit-actions button img {
+    width: 24px;
+    height: 24px;
+}
+
+.add-unit-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.instructions .icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+
+
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.group-icons {
+    display: flex;
+    align-items: center;
+}
+
+.drag-group-icon {
+    width: 32px;
+    height: 32px;
+    margin-left: 10px;
+    cursor: move;
+}
+.add-unit-icon {
+    width: 37px;
+    height: 37px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.unit-group {
+    position: relative; /* ensure the icon stay at the right-top cournter */
+}
+
+.group-icons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.unit-group h3 {
+    margin: 0;
+    font-size: 1.4em;
+    color: #2A3486;
+}
+
+
+/* Modal container */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Ensure the modal is on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scrolling if the content is too large */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px; /* Modal width */
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Search input */
+.search-input {
+    width: 100%;
+    padding: 0px;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Save button */
+.save-btn {
+    background-color: #2A3486;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-btn:hover {
+    background-color: #1E2B66;
+}
+
+.modal-content h2{
+    color:#2A3486;
+}
+
