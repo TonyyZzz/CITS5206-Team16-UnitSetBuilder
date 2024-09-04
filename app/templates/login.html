@@ -4,18 +4,48 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <h2>Login</h2>
-    <form method="post" action="{{ url_for('auth.login') }}">
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
+    <div id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
             <button type="submit">Login</button>
-        </div>
-    </form>
+        </form>
+        <p id="login-message"></p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#login-form').on('submit', function(event) {
+                event.preventDefault();
+
+                const username = $('#username').val();
+                const password = $('#password').val();
+
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ username: username, password: password }),
+                    success: function(response) {
+                        $('#login-message').text(response.message);
+                        if (response.status === "success") {
+                            alert("Login successful!");
+                            window.location.href = "/";
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#login-message').text(xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>
+
 {% endblock %}
