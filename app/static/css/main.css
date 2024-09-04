@@ -29,7 +29,7 @@ header {
 }
 
 .headerLogo img{
-    height:30px;
+    height:80px;
 }
 
 header h1{
@@ -95,3 +95,4 @@ footer {
     width: 100%;
     bottom: 0;
 }
+

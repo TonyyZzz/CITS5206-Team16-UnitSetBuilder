@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
+{% block content %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Set Checklist</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/unit_set.css') }}">
     <script src="{{ url_for('static', filename='js/unit_set.js') }}"></script>
-</head>
-<body>
+
     <div class="container">
-        <header>
-            <div class="banner">
-                <img src="{{ url_for('static', filename='image/UWAlogo.png') }}" alt="UWA Logo" class="logo">
-            </div>
             <h1>Unit Set checklist</h1>
             <h2>Master of Information Technology: Artificial Intelligence (AI) Stream</h2>
-        </header>
         
         <div class="group-selector">
             <p>Select the Group you want to add:</p>
@@ -30,7 +23,7 @@
         </div>
 
         <div class="unit-set">
-            <div class="unit-group core-unit">
+            <div class="unit-group core-unit" id="core-unit">
                 <div class="group-header">
                     <h3>Core Unit</h3>
                     <div class="group-icons">
@@ -38,7 +31,9 @@
                         <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
                     </div>
                 </div>
-                <p>Take all units from this group (24 points)</p>
+                <p>Take all units from this group (24 points)
+                    <img src="{{ url_for('static', filename='image/edit.png') }}" alt="Edit Icon" class="edit-icon">
+                </p>
                 <!-- Core Units -->
                 <div class="unit" id="unit-1"  draggable="true">
                     <span class="unit-name">CITS1401: Computational Thinking with Python</span>
@@ -72,9 +67,10 @@
                         <button class="remove-btn" data-unit-id="unit-4"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
                     </span>
                 </div>
+                <img src="{{ url_for('static', filename='image/bin.png') }}" alt="Delete Section Icon" class="bin-icon" onclick="removeSection('core-unit')">
             </div>
 
-            <div class="unit-group conversion-unit">
+            <div class="unit-group conversion-unit" id="conversion-unit">
                 <div class="group-header">
                     <h3>Conversion Unit</h3>
                     <div class="group-icons">
@@ -82,7 +78,9 @@
                         <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
                     </div>
                 </div>
-                <p>Take all units from this group (24 points)</p>
+                <p>Take all units from this group (24 points)
+                    <img src="{{ url_for('static', filename='image/edit.png') }}" alt="Edit Icon" class="edit-icon">
+                </p>
                 <!-- Conversion Units -->
                 <div class="unit" id="unit-5"  draggable="true">
                     <span class="unit-name">CITS1003: Introduction to Cybersecurity</span>
@@ -98,9 +96,10 @@
                         <button class="remove-btn" data-unit-id="unit-6"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
                     </span>
                 </div>
+                <img src="{{ url_for('static', filename='image/bin.png') }}" alt="Delete Section Icon" class="bin-icon" onclick="removeSection('conversion-unit')">
             </div>
 
-            <div class="unit-group option-unit">
+            <div class="unit-group option-unit" id="option-unit">
                 <div class="group-header">
                     <h3>Option Unit</h3>
                     <div class="group-icons">
@@ -108,7 +107,9 @@
                         <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
                     </div>
                 </div>
-                <p>Take all units from this group (24 points)</p>
+                <p>Take all units from this group (24 points)
+                    <img src="{{ url_for('static', filename='image/edit.png') }}" alt="Edit Icon" class="edit-icon">
+                </p>
                 <!-- Option Units -->
                 <div class="unit" id="unit-7"  draggable="true">
                     <span class="unit-name">CITS4012: Natural Language Processing</span>
@@ -145,9 +146,10 @@
                         <button class="remove-btn" data-unit-id="unit-11"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
                     </span>
                 </div>
+                <img src="{{ url_for('static', filename='image/bin.png') }}" alt="Delete Section Icon" class="bin-icon" onclick="removeSection('option-unit')">
             </div>
             
-            <div class="unit-group customised-unit">
+            <div class="unit-group customised-unit" id="customised-unit">
                 <div class="group-header">
                     <h3>Customised Unit</h3>
                     <div class="group-icons">
@@ -155,7 +157,9 @@
                         <img src="{{ url_for('static', filename='image/add_unit.png') }}" alt="Add Unit Icon" class="add-unit-icon">
                     </div>
                 </div>
-                <p>Take all units from this group (24 points)</p>
+                <p>Take all units from this group (24 points)
+                    <img src="{{ url_for('static', filename='image/edit.png') }}" alt="Edit Icon" class="edit-icon">
+                </p>
                 <!-- Customised Units -->
                 <div class="unit" id="unit-12"  draggable="true">
                     <span class="unit-name">CITS4401: Software Requirements and Design</span>
@@ -178,6 +182,7 @@
                         <button class="remove-btn" data-unit-id="unit-14"><img src="{{ url_for('static', filename='image/delete_unit.png') }}" alt="Remove Icon"></button>
                     </span>
                 </div>
+                <img src="{{ url_for('static', filename='image/bin.png') }}" alt="Delete Section Icon" class="bin-icon" onclick="removeSection('customised-unit')">
             </div>
         </div>
     </div>
@@ -189,6 +194,4 @@
             <button class="save-btn">Save</button>
         </div>
     </div>
-</body>
-</html>
- 
+    {% endblock %}
