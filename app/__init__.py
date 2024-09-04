@@ -3,12 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Config
 from flask_login import LoginManager
+from flask_bcrypt import Bcrypt
 # from flask_wtf import CSRFProtect
 
 # Initialize the extensions
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+bcrypt = Bcrypt()
 # csrf = CSRFProtect()
 
 def create_app(config_name):
@@ -23,6 +26,7 @@ def create_app(config_name):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    bcrypt = Bcrypt(app)
     # csrf.init_app(app)
 
     # Import and register blueprints
