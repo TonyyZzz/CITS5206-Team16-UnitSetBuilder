@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Delete
+    // Delete unit
     const removeButtons = document.querySelectorAll(".remove-btn");
     removeButtons.forEach(button => {
         button.addEventListener("click", function() {
@@ -30,6 +30,27 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+    // Delete section functionality
+    const deleteSectionIcons = document.querySelectorAll(".bin-icon");
+    deleteSectionIcons.forEach(icon => {
+        icon.addEventListener("click", function() {
+            const section = icon.closest(".unit-group"); // Get the closest unit-group section
+            if (section) {
+                section.remove(); // Remove the entire section
+            }
+        });
+    });
+
+// Function to remove a section
+function removeSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.remove();
+        console.log('Section removed:', sectionId);  // Debugging line
+    } else {
+        console.log('Section not found:', sectionId);  // Debugging line
+    }
+}
 
 // Drag Group
 document.addEventListener("DOMContentLoaded", function() {
