@@ -36,7 +36,7 @@
                     success: function(response) {
                         $('#login-message').text(response.message);
                         if (response.status === "success") {
-                            alert("Login successful!");
+                            alert("Login successful! Your email is :" + response.email);
                             window.location.href = "/";
                         }
                     },
