@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, request, jsonify
 from ..models import Unit  # Import the Unit model
 
 # Define a new blueprint for search functionality
@@ -13,4 +13,5 @@ def search_units():
     else:
         results = []
 
-    return render_template('search_results.html', results=results)
+    # Always return JSON response for search
+    return jsonify([{'id': unit.id, 'name': unit.name} for unit in results])

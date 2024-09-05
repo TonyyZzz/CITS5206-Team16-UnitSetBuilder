@@ -306,3 +306,28 @@ h2 {
     margin-left: auto;
     margin-right: 15px;
 }
+
+.search-results-container {
+    margin-top: 10px;  /* Add some margin for separation */
+    max-height: 200px;  /* Limit height if necessary */
+    overflow-y: auto;  /* Enable scrolling if too many results */
+    border: 1px solid #ccc;  /* Add a border to distinguish it */
+    padding: 5px;  /* Add some padding */
+    background-color: #fff;  /* Ensure background color is white */
+}
+
+.search-result-item {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;  /* Ensure background color is white */
+}
+
+.search-result-item:hover {
+    background-color: #f0f0f0;
+}
+
+.no-results {
+    padding: 8px;
+    color: #888;
+}
