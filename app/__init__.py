@@ -34,6 +34,9 @@ def create_app(config_name):
     from .routes.group import group as group_blueprint
     app.register_blueprint(group_blueprint)
 
+    from .routes.unit import unit as unit_blueprint
+    
+
     with app.app_context():
         from . import models
 
