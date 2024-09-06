@@ -7,4 +7,4 @@ group = Blueprint('group', __name__)
 unit = Blueprint('unit', __name__)
 
 # Import routes to register them with the blueprints
-from . import main, auth
+from . import main, auth, group, unit
