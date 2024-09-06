@@ -1,0 +1,87 @@
+/* Ensure the placeholder text in the search input is lighter */
+#search-input::placeholder {
+    color: #cccccc;
+}
+
+/* Keep the input background color consistent */
+#search-input {
+    background-color: white !important;
+    border: 1px solid #ced4da;
+    box-shadow: none !important;
+    transition: none;
+    height: 75px;
+    font-size: 1.75rem;
+}
+
+/* Adjustments for the CAIDi section */
+.bg-warning {
+    background-color: #FFF3CD !important;
+    border-radius: 8px;
+    margin-bottom: 0px;
+    margin-top: 20px; /* This will create space between the navbar and yellow box */
+}
+
+/* Adjust spacing for the alert message */
+.alert-light {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    text-align: left;
+    display: block;
+}
+
+/* Style adjustments */
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Control the size of the status buttons */
+.status-button {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+}
+
+/* Unchecked checkbox style */
+.checkbox-unchecked {
+    border: 1px solid #ced4da;
+    background-color: white;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+/* Delete button */
+.btn-danger {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: #ced4da;
+    border: none;
+}
+
+.btn-danger img {
+    width: 15px;
+}
+
+/* Align the card to avoid extra spacing */
+.card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Remove extra spacing between the top and navbar */
+.container {
+    margin-top: 20px;
+    padding-top: 0;
+}

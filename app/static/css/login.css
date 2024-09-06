@@ -1,0 +1,81 @@
+/* Set the background to the university image */
+.background {
+    background-image: url('https://res.cloudinary.com/dynbwiv3t/image/upload/v1725525326/UWA_-__University_of_Western_Australia-4282_hupk9d.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* White box for login */
+.login-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* School logo at the top */
+.logo {
+    display: block;
+    width: 150px;
+    margin: 0 auto 20px;
+}
+
+/* Form heading */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Input fields */
+.input-box {
+    width: 100%; /* Ensure the input fields take up the full width of their container */
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Placeholder color */
+::placeholder {
+    color: #aaa;
+}
+
+/* Log in button */
+.login-btn {
+    display: block;
+    margin: 0 auto; /* Ensure the button is centered */
+    width: 70%; /* Adjust the width as needed to center it */
+    padding: 12px;
+    background-color: #28348B;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background-color: #1f2a70;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
