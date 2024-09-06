@@ -3,7 +3,7 @@ from . import group
 from ..models import Group, UnitSet
 from .. import db
 
-@group.route('/addGroup', request = ['POST'])
+@group.route('/addGroup', methods = ['POST'])
 def addGroup():
 
 # Get the unit_set_id from the request (e.g., from a form or JSON data)
@@ -42,7 +42,7 @@ def addGroup():
     flash('Group added successfully to UnitSet!', 'success')
     return redirect(url_for('main.unitset', unit_set_id=unit_set.id))  # Redirect to a page showing groups for the UnitSet
 
-@group.route('deleteGroup/<int:group_id>', method=['POST'])
+@group.route('/deleteGroup/<int:group_id>', methods=['POST'])
 def deleteGroup(group_id):
     # Retrieve the group by its ID
     group = Group.query.get(group_id)
@@ -65,7 +65,7 @@ def deleteGroup(group_id):
     # Redirect to a page showing groups or home page
     return redirect(url_for('group.view_groups'))
 
-@group.route('editGroup/<int:group_id>', method=['POST'])
+@group.route('/editGroup/<int:group_id>', methods=['POST'])
 def edit_group(group_id):
     # Retrieve the group by ID
     group = Group.query.get(group_id)

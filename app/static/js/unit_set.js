@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Add click event to add the selected unit to the unit set
                         item.addEventListener("click", function () {
                             addUnitToSet(unit);  // Function to add unit
+                            saveUnitToGroup(unit, 1); // Function to add unit to database
                             modal.style.display = "none";
                             resultContainer.innerHTML = "";  // Clear results after selection
                         });
@@ -191,5 +192,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Append the new unit element to the desired group or location in your DOM
         document.querySelector(".core-unit").appendChild(unitElement);  // Adjust selector as needed
+    }
+
+    // Function to send the selected unit to the backend to be saved
+    function saveUnitToGroup(unit, group_id = 1) {
+        console.log(unit, group_id)
+        fetch('/addUnit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'  // Indicate AJAX request
+            },
+            body: JSON.stringify({
+                group_id: group_id,  // Pass the group ID
+                unit_id: unit.id    // Pass the selected unit ID
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Unit added successfully");
+                // Optionally show a success message
+            } else {
+                console.error("Error adding unit:", data.error);
+                // Optionally show an error message
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 });

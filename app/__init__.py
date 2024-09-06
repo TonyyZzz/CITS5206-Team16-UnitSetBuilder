@@ -39,10 +39,10 @@ def create_app(config_name):
     from .routes.search import search as search_blueprint  # Register the search blueprint
     app.register_blueprint(search_blueprint)
 
-    from .routes import group as group_blueprint
+    from .routes.group import group as group_blueprint
     app.register_blueprint(group_blueprint)
 
-    from .routes import unit as unit_blueprint
+    from .routes.unit import unit as unit_blueprint
     app.register_blueprint(unit_blueprint)
 
     with app.app_context():

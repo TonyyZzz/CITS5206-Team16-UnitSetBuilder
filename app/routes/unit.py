@@ -1,25 +1,28 @@
-from flask import request, redirect, url_for, flash, render_template
+from flask import request, redirect, url_for, flash, jsonify, Blueprint
 from . import unit
 from ..models import Group, GroupElement, Unit
 from .. import db
 
+unit = Blueprint('unit', __name__)
+
 @unit.route('/addUnit', methods=['POST'])
 def addUnit():
     try:
-        # Get data from the form
-        group_id = request.form.get('group_id')
-        unit_id = request.form.get('unit_id')
+        # Get data from the JSON request
+        data = request.get_json()
+        group_id = data.get('group_id')
+        unit_id = data.get('unit_id')
 
         # Validate if the group and unit exist
         group = Group.query.get(group_id)
         if not group:
-            flash(f'Group with ID {group_id} does not exist', 'error')
-            return redirect(url_for('main.unit_set'))
+            return jsonify({"success": False, "error": f"Group with ID {group_id} does not exist"})
+
 
         unit = Unit.query.get(unit_id)
         if not unit:
-            flash(f'Unit with ID {unit_id} does not exist', 'error')
-            return redirect(url_for('main.unit_set'))
+            return jsonify({"success": False, "error": f"Unit with ID {unit_id} does not exist"})
+
 
         # Create a new GroupElement
         new_group_element = GroupElement(
@@ -33,12 +36,11 @@ def addUnit():
         db.session.add(new_group_element)
         db.session.commit()
 
-        flash('GroupElement added successfully!', 'success')
-        return redirect(url_for('main.unit_set'))
+        return jsonify({"success": True})  # Send success response
 
     except Exception as e:
-        flash(f'Error adding GroupElement: {str(e)}', 'error')
-        return redirect(url_for('groupelements.add_group_element_form'))
+        return jsonify({"success": False, "error": str(e)})
+
     
 @unit.route('/editUnit/<int:element_id>', methods=['POST'])
 def editUnit(element_id):
