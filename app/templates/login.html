@@ -1,103 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UWA Log In</title>
-    <!-- Including Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #28348B;">
-        <div class="container-fluid">
-            <!-- Left-aligned UWA logo from local file -->
-            <a class="navbar-brand d-flex align-items-center" href="#" style="height: 100%;">
-                <img src="{{ url_for('static', filename='images/UWAlogo.png') }}" alt="UWA Logo" style="height: 50px; width: auto; margin-right: 10px;">
-                UNIT SET BUILDER
-            </a>
-            <!-- Toggle button for smaller screens -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.grouping') }}">Groups</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.unit_set') }}">Unit Set</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% extends "base.html" %}
+{% block content %}
+<body>  
 
-    <!-- Login Page Content -->
+    <!-- Login Page Content (No change to style, only connecting the form) -->
     <div class="background">
         <div class="login-box">
-            <!-- Using the Cloudinary external link for the logo inside the white box -->
             <img src="https://res.cloudinary.com/dynbwiv3t/image/upload/v1725178833/uwalogo_transparent_pdm2v9.png" alt="UWA Logo" class="logo">
             <h1>Log in to your account</h1>
-            <form action="{{ url_for('auth.login') }}" method="post" class="login-form">
+            <form id="login-form" method="POST">
                 <input type="text" placeholder="Student Account" class="input-box" id="username" required>
                 <input type="password" placeholder="Password" class="input-box" id="password" required>
                 <button type="submit" class="login-btn">Log In</button>
             </form>
+            <p id="login-message"></p> <!-- This will show messages after backend response -->
         </div>
     </div>
 
-{% block content %}
-    <div id="login-container">
-        <h2>Login</h2>
-        <form id="login-form">
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <p id="login-message"></p>
-    </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#login-form').on('submit', function(event) {
-                event.preventDefault();
-
-                const username = $('#username').val();
-                const password = $('#password').val();
-
-                $.ajax({
-                    url: '/login',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ username: username, password: password }),
-                    success: function(response) {
-                        $('#login-message').text(response.message);
-                        if (response.status === "success") {
-                            alert("Login successful! Your email is : " + response.email);
-                            window.location.href = "/";
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#login-message').text(xhr.responseJSON.message);
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- Including Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS for handling form submission -->
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body> 
 
 {% endblock %}
