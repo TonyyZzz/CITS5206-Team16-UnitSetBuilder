@@ -37,7 +37,7 @@
     padding-bottom: 20px;
 }
 
-.groups-card {
+.groups-card{
     box-shadow: 0 4px 8px 0 rgba(3, 3, 3, 0.2);
     text-align: left;
     margin-right: 20px;
@@ -50,17 +50,33 @@
     border-radius: 5px;
 }
 
-.add-group-header,
-.course-card-header{
+#detailsDisplay{
+    box-shadow: 0 4px 8px 0 rgba(3, 3, 3, 0.2);
+    text-align: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: white;
+    height: 80px;
+    color: var(--black);
+    padding-left: 20px;
+    border-radius: 5px;
+}
+
+.add-group-header{
     font-size: 20px;
     color:var(--black);
     padding-top:10px;
 }
 
 .course-card-header{
-    margin-bottom:0px;
-    text-align:center;
-    padding-top: 0px;
+    font-size: 20px;
+    color:var(--black);
+    margin-bottom: 0%;
+    display: inline-block;
+    gap: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 5px;
 }
 
 .caption{
@@ -68,6 +84,8 @@
     color: rgb(97, 97, 97);
     font-weight: bolder;
     margin-left:0px;
+    padding-bottom: 20px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .button-links{
@@ -90,18 +108,25 @@
 
 .group-add-section{
     display: flex; 
-    align-items: center; 
+    align-items: baseline; 
     gap: 10px;
 }
 
-.course-heading-container {
-    text-align: center;
-    display: flex; 
-    gap:300px;
+.group-details-section{
+    display: flex;
+    align-items: center; 
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.course-heading-container{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px 15px;
 }
 
 .download-button {
-    display: inline-block;
     padding: 10px 10px;
     font-size: 16px;
     font-weight: bold;
@@ -113,9 +138,9 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.3s;
     margin-top:10px;
-    margin-left:210px;
-    padding-bottom: 10px;
     height:20px;
+    display: inline-flex; /* Inline-flex for alignment with icon */
+    align-items: center;
 }
 
 .fa-solid.fa-circle-down{
@@ -135,7 +160,7 @@
 #additional-group-button{
     background-color: #0F6CBD;
     margin-left:15px;
-    
+    align-items: baseline;
 }
 
 #additional-group-button:hover{
@@ -164,14 +189,13 @@
     margin-right: 20px;
     cursor:pointer;
     text-align: center;
-    margin-top:10px;
 }
 
 .action-buttons{
-    margin-left:550px;
-    align-items: center;
-    text-align: center;
-    margin-top:5px;
+    display: inline-block;
+    gap: 10px;
+    /* float:right; */
+    padding-right: 50px;
 }
 
 .action-button{
@@ -187,9 +211,10 @@
     padding-left:5px;
 }
 
-.group{
+.expand-button{
     padding:0px,0px;
     margin:0px,0px;
+    display: inline-block;
 }
 
 #group-caption{
@@ -198,4 +223,118 @@
 
 #expand-button:hover{
     color: var(--header);
+}
+
+.popup {
+    display: none; 
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.popup-content {
+    background-color: #fff;
+    margin: 10% auto; /* Center the popup */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: small;
+    display: inline-block;
+}
+
+form input,
+form select {
+    margin-bottom: 15px;
+    padding: 5px;
+    border: none; 
+    border-bottom: 2px solid grey; 
+    border-radius: 0; 
+    outline: none; 
+    transition: border-color 0.3s;
+    background-color:transparent ;
+    width: calc(100%);
+}
+
+form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px; 
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+#detailsDisplay {
+    margin-top: 20px;
+}
+
+#detailsDisplay h3 {
+    color: #333;
+}
+
+#existingOptionSection,
+#newOptionSection{
+    margin-bottom: 20px;
+    border-radius: 4px;
+    padding: 20px 20px;
+    background-color: #bddefa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.success-message {
+    color: green;
+    font-weight: bold;
+    font-size: 10px;
 }
