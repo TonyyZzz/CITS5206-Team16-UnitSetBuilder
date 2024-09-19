@@ -85,7 +85,7 @@
             </div>
             {% if specialisations %}
                 {% for specialization in specialisations %}
-                <div id="detailsDisplay">
+                <div id="detailsDisplay" data-specialization-id="{{ specialization.id }}">
                     <div class="group-details-section">
                         <div class="fas fa-bars" id="expand-button">
                             <h2 class="course-card-header">{{ specialization.name }}</h2>
@@ -95,7 +95,7 @@
                             <button class="edit-button action-button">
                                 <a id="group-links" class="edit-link" href="#unit-set-page">Edit<i class="fas fa-edit"></i></a>
                             </button>
-                            <button class="delete-button action-button">
+                            <button class="delete-button action-button" data-specialization-id="{{ specialization.id }}">
                                 <a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a>
                             </button>
                         </div>

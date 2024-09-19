@@ -104,4 +104,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+        // Function to delete a specialization
+        function deleteSpecialisation(specialisationId, courseId) {
+            // Make the AJAX request to delete the specialization
+            fetch('/delete-specialisation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    course_id: courseId,
+                    specialization_id: specialisationId
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Delete successful:', data.message);
+                    console.log(specialisationId)
+
+                    const groupSection = document.querySelector(`#detailsDisplay[data-specialization-id="${specialisationId}"]`);
+                    console.log(groupSection)
+
+                    if (groupSection) {
+                        groupSection.remove();
+                    }                
+                } else {
+                    console.log('Error:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    
+        // Example usage: Attach event listener to delete buttons
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const specializationId = parseInt(button.getAttribute('data-specialization-id'), 10);
+                // Call the delete function with the retrieved course ID and specialization ID
+                deleteSpecialisation(specializationId, courseId);
+            });
+        });
+
 });
