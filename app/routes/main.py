@@ -68,7 +68,7 @@ def unit_set():
 
         groups = Group.query.filter_by(unit_set_id=item_id).all()
 
-        return render_template('unit_set.html', item=specialisationData, type='specialisation', course = courseData, courseData=courseData, groups = groups)
+        return render_template('unit_set.html', item=specialisationData, type='specialization', course = courseData, courseData=courseData, groups = groups)
     
     else:
         return "Error: Invalid type", 400
