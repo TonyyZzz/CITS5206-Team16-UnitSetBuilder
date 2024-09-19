@@ -43,7 +43,9 @@ class UnitSet(db.Model):
             'id': self.id,
             'title': self.title,
             'description': self.description,
-            'note': self.note
+            'note': self.note,
+            'groups': [group.to_dict() for group in self.groups]
+
         }
 
 class Specialisation(db.Model):
@@ -63,6 +65,8 @@ class Specialisation(db.Model):
             'code': self.code,
             'description': self.description,
             'note': self.note,
+            'groups': [group.to_dict() for group in self.groups]
+
         }
 
 
@@ -102,7 +106,8 @@ class Group(db.Model):
             'is_specialisation': self.is_specialisation,
             'unit_set_id' : self.unit_set_id ,
             'specialisation_id' : self.specialisation_id ,
-            'parent_group_id' : self.parent_group_id
+            'elements': [element.to_dict() for element in self.group_elements]  # Include related groups
+
         }
 
 
@@ -112,7 +117,16 @@ class GroupElement(db.Model):
     capstone_flag = db.Column(db.Boolean, default=False)
     group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'), nullable=False)
+    unit = db.relationship('Unit', backref='group_elements')
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'research_flag': self.research_flag,
+            'capstone_flag': self.capstone_flag,
+            'unit_id': self.unit_id,
+            'unit_name': self.unit.name  # Access the unit's name via the relationship
+        }
 
 class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)

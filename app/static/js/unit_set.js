@@ -24,15 +24,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Delete Section Functionality
+    // Delete Section Functionality DELETE GROUP HERE !!!!!!!!!!!!!!!!!!!!!!!
     document.body.addEventListener("click", function (e) {
         if (e.target.closest(".bin-icon")) {
             const section = e.target.closest(".unit-group");
-            if (section) {
-                section.remove();
+            const groupId = parseInt(section.getAttribute('data-group-id'), 10);  // Assuming the group ID is stored in a data attribute
+            console.log(groupId)
+            if (groupId) {
+                deleteGroup(groupId).then(() => {
+                        section.remove(); // Remove from the UI if successful
+                }).catch((error) => {
+                        console.error("Error deleting group:", error);
+                });
             }
         }
     });
+
+    // Function to send delete request to Flask
+    async function deleteGroup(groupId) {
+        const response = await fetch(`/delete_group/${groupId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',  // Indicates AJAX request
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            console.log("Group deleted successfully");
+        } else {
+            console.error("Error:", data.error);
+            throw new Error(data.error);
+        }
+    }
 
     // Drag and Drop Functionality for Groups
     let draggedGroup = null;
@@ -222,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     
-    // GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // CREATE GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
     const groupButtons = document.querySelectorAll('.group-btn');
     
     groupButtons.forEach(button => {
@@ -318,8 +344,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
-
-
 
 
 });

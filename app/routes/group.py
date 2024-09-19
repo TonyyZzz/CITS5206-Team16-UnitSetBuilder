@@ -49,25 +49,18 @@ def addGroupToSpecialization():
     return jsonify({'success': True, 'message': 'Group added to specialization successfully'})
 
 
-@group.route('/deleteGroup/<int:group_id>', methods=['POST'])
+@group.route('/delete_group/<int:group_id>', methods=['DELETE'])
 def deleteGroup(group_id):
-    # Retrieve the group by its ID
+    # Find the group by id
     group = Group.query.get(group_id)
     
-    # Check if the group exists
+    # If the group doesn't exist, return an error
     if not group:
-        flash(f'Group with ID {group_id} does not exist', 'error')
-        return redirect(url_for('main.unit_set'))  # Redirect to the group list or an error page
+        return jsonify({'success': False, 'error': 'Group not found'}), 404
 
-    try:
-        # Delete the group
-        db.session.delete(group)
-        db.session.commit()
+    # Delete the group
+    db.session.delete(group)
+    db.session.commit()
 
-        flash('Group deleted successfully!', 'success')
-    except Exception as e:
-        db.session.rollback()  # Rollback in case of error
-        flash(f'Error deleting group: {str(e)}', 'error')
-
-    # Redirect to a page showing groups or home page
-    return redirect(url_for('group.view_groups'))
+    # Return a success response
+    return jsonify({'success': True, 'message': 'Group deleted successfully'})
