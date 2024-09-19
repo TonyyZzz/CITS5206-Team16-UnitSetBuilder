@@ -358,7 +358,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .catch(error => console.error('Error:', error));
-        } else {
+        } else if (type === 'specialization') {
+            console.log("I am here")
             fetch('/add_group_to_specialization', {
                 method: 'POST',
                 headers: {

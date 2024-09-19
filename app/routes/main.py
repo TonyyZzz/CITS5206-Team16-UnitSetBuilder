@@ -32,10 +32,10 @@ def grouping():
 
     # Get all Specialisations associated with the course
     # Assuming that you have a relationship through the CourseSpecialisation table
-    specialisations = Specialisation.query.join(CourseSpecialisation).filter(CourseSpecialisation.course_id == course_id).all()
+    specializations = Specialisation.query.join(CourseSpecialisation).filter(CourseSpecialisation.course_id == course_id).all()
 
     # Pass these values to the template
-    return render_template('grouping-page.html', course=course, unit_set=unit_set, specialisations=specialisations)
+    return render_template('grouping-page.html', course=course, unit_set=unit_set, specializations=specializations)
 
 
 
@@ -59,16 +59,16 @@ def unit_set():
     
     elif item_type == 'specialization':
         # Fetch specialization data using item_id
-        specialisation = Specialisation.query.get(item_id)
-        specialisationData = specialisation.to_dict()
-        course_specialisation = CourseSpecialisation.query.filter_by(specialisation_id=item_id).first()
-        if course_specialisation:
-            course = Course.query.get(course_specialisation.course_id)
+        specialization = Specialisation.query.get(item_id)
+        specializationData = specialization.to_dict()
+        course_specialization = CourseSpecialisation.query.filter_by(specialisation_id=item_id).first()
+        if course_specialization:
+            course = Course.query.get(course_specialization.course_id)
             courseData = course.to_dict()
 
-        groups = Group.query.filter_by(unit_set_id=item_id).all()
+        groups = Group.query.filter_by(specialisation_id=item_id).all()
 
-        return render_template('unit_set.html', item=specialisationData, type='specialization', course = courseData, courseData=courseData, groups = groups)
+        return render_template('unit_set.html', item=specializationData, type='specialization', course = courseData, courseData=courseData, groups = groups)
     
     else:
         return "Error: Invalid type", 400
