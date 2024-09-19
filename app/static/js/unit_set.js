@@ -138,7 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Open modal and add event listeners
     document.body.addEventListener("click", function (e) {
         if (e.target.closest(".add-unit-icon")) {
+            const unitGroup = e.target.closest(".unit-group");
             modal.style.display = "block";
+            modal.setAttribute('data-group-id', unitGroup.getAttribute('data-group-id'))
         }
     });
 
@@ -157,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle search input and show results inline
     searchInput.addEventListener("input", function () {
         const query = searchInput.value.trim();
+        const groupId = parseInt(modal.getAttribute('data-group-id'),10)
         if (query.length > 0) { // Ensure input length is sufficient
             fetch(`/search?query=${encodeURIComponent(query)}`, {
                 method: 'GET',
@@ -180,8 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // Add click event to add the selected unit to the unit set
                         item.addEventListener("click", function () {
-                            addUnitToSet(unit);  // Function to add unit
-                            saveUnitToGroup(unit, 1); // Function to add unit to database
+                            addUnitToSet(unit, groupId);  // Function to add unit
+                            saveUnitToGroup(unit, groupId); // Function to add unit to database
                             modal.style.display = "none";
                             resultContainer.innerHTML = "";  // Clear results after selection
                         });
@@ -202,22 +205,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Function to add the selected unit to the unit set
-    function addUnitToSet(unit) {
+    function addUnitToSet(unit, groupId) {
         // Create a new unit element (customize this as needed)
-        const unitElement = document.createElement("div");
-        unitElement.className = "unit";
-        unitElement.id = `unit-${unit.id}`;
-        unitElement.draggable = true;
-        unitElement.innerHTML = `
-            <span class="unit-name">${unit.name} (ID: ${unit.id})</span>
-            <span class="unit-actions">
-                <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
-                <button class="remove-btn" data-unit-id="unit-${unit.id}"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
-            </span>
-        `;
+        const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
 
-        // Append the new unit element to the desired group or location in your DOM
-        document.querySelector(".core-unit").appendChild(unitElement);  // Adjust selector as needed
+        if (targetGroup){
+            const unitElement = document.createElement("div");
+            unitElement.className = "unit";
+            unitElement.id = `unit-${unit.id}`;
+            unitElement.draggable = true;
+            unitElement.innerHTML = `
+                <span class="unit-name">${unit.name} (ID: ${unit.id})</span>
+                <span class="unit-actions">
+                    <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
+                    <button class="remove-btn" data-unit-id="unit-${unit.id}"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
+                </span>
+            `;
+
+            
+            // Find the bin icon in the target group
+            const binIcon = targetGroup.querySelector('.bin-icon');
+
+            // Insert the unit element before the bin icon
+            targetGroup.insertBefore(unitElement, binIcon);
+
+        } else {
+            console.error(`Group with ID ${groupId} not found.`);
+        }
     }
 
     // Function to send the selected unit to the backend to be saved
@@ -254,8 +268,8 @@ document.addEventListener("DOMContentLoaded", function () {
     groupButtons.forEach(button => {
         button.addEventListener('click', () => {
             const groupType = button.classList[1]; // Gets the group type from the class name
-            createGroupContainer(groupType);
-            addGroup(itemType, itemData['id'], groupType);
+            const newGroup = createGroupContainer(groupType);
+            addGroup(itemType, itemData['id'], groupType, newGroup);
         });
     });
 
@@ -282,6 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Append the new group to the unit set container
         unitSet.appendChild(newGroup);
+        return newGroup
     }
 
     function capitalizeFirstLetter(string) {
@@ -291,7 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(courseData)
     console.log(itemData)
     // createGroup
-    function addGroup(type, item_id, group_type) {
+    function addGroup(type, item_id, group_type, newGroup) {
         
         if (type === 'unitset') {
             fetch('/add_group_to_unitset', {
@@ -311,6 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     console.log("group added to unitset successfully");
                     // Optionally show a success message
+                    newGroup.setAttribute('data-group-id', data.group_id);
                 } else {
                     console.error("Error adding group:", data.error);
                     // Optionally show an error message
@@ -335,6 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     console.log("group added to specialization successfully");
                     // Optionally show a success message
+                    newGroup.setAttribute('data-group-id', data.group_id);
                 } else {
                     console.error("Error adding group:", data.error);
                     // Optionally show an error message

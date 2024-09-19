@@ -23,7 +23,7 @@ def addGroupToUnitSet():
     db.session.add(new_group)
     db.session.commit()
 
-    return jsonify({'success': True, 'message': 'Group added to unit set successfully'})
+    return jsonify({'success': True, 'message': 'Group added to unit set successfully','group_id': new_group.id})
 
 
 @group.route('/add_group_to_specialization', methods=['POST'])
@@ -46,7 +46,7 @@ def addGroupToSpecialization():
     db.session.add(new_group)
     db.session.commit()
 
-    return jsonify({'success': True, 'message': 'Group added to specialization successfully'})
+    return jsonify({'success': True, 'message': 'Group added to specialization successfully', 'group_id': new_group.id})
 
 
 @group.route('/delete_group/<int:group_id>', methods=['DELETE'])

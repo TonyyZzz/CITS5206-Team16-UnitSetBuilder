@@ -17,7 +17,7 @@ class Course(db.Model):
     code = db.Column(db.String(50), nullable=False)
     description = db.Column(db.Text, nullable=True)
     unit_sets = db.relationship('UnitSet', backref='course', lazy=True)
-    course_specialisations = db.relationship('CourseSpecialisation', backref='course', lazy=True)
+    course_specialisations = db.relationship('CourseSpecialisation', backref='course', cascade="all, delete-orphan", lazy=True)
 
 
     def to_dict(self):
@@ -55,8 +55,8 @@ class Specialisation(db.Model):
     description = db.Column(db.Text)
     outcome = db.Column(db.Text)
     note = db.Column(db.Text)
-    groups = db.relationship('Group', backref='specialisation', lazy=True)
-    course_specialisations = db.relationship('CourseSpecialisation', backref='specialisation', lazy=True)
+    groups = db.relationship('Group', backref='specialisation', cascade="all, delete-orphan", lazy=True)
+    course_specialisations = db.relationship('CourseSpecialisation', backref='specialisation', cascade="all, delete-orphan", lazy=True)
 
     def to_dict(self):
         return {
@@ -94,9 +94,9 @@ class Group(db.Model):
     parent_group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=True)
 
     # Self-referential relationship for parent-child groups
-    children = db.relationship('Group', backref=db.backref('parent', remote_side=[id]), lazy=True)
+    children = db.relationship('Group', backref=db.backref('parent', remote_side=[id]), cascade="all, delete-orphan", lazy=True)
 
-    group_elements = db.relationship('GroupElement', backref='group', lazy=True)
+    group_elements = db.relationship('GroupElement', backref='group', cascade="all, delete-orphan", lazy=True)
 
     def to_dict(self):
         return {
