@@ -15,11 +15,34 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.addEventListener("click", function (e) {
         if (e.target.closest(".remove-btn")) {
             const button = e.target.closest(".remove-btn");
-            const unitId = button.getAttribute("data-unit-id");
-            const unitElement = document.getElementById(unitId);
-
+            const unitElement = button.closest('.unit');
+            const dataKey = unitElement.getAttribute('data-key');
             if (unitElement) {
                 unitElement.remove();
+                // Send an AJAX request to delete the unit from the database
+                fetch('/delete_unit', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'  // Indicates it's an AJAX request
+                    },
+                    body: JSON.stringify({
+                        unit_id: dataKey  // Send the unit ID as part of the request body
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Unit deleted successfully from the database.");
+                    } else {
+                        console.error("Error deleting unit:", data.error);
+                        // Optionally handle the error (e.g., show an alert or revert the DOM change)
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Optionally handle the error (e.g., show an alert or revert the DOM change)
+                });
             }
         }
     });
@@ -183,8 +206,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // Add click event to add the selected unit to the unit set
                         item.addEventListener("click", function () {
-                            addUnitToSet(unit, groupId);  // Function to add unit
-                            saveUnitToGroup(unit, groupId); // Function to add unit to database
+                            const unitElement = addUnitToSet(unit, groupId);  // Function to add unit
+                            saveUnitToGroup(unit, groupId, unitElement); // Function to add unit to database
                             modal.style.display = "none";
                             resultContainer.innerHTML = "";  // Clear results after selection
                         });
@@ -218,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <span class="unit-name">${unit.name} (ID: ${unit.id})</span>
                 <span class="unit-actions">
                     <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
-                    <button class="remove-btn" data-unit-id="unit-${unit.id}"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
+                    <button class="remove-btn"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
                 </span>
             `;
 
@@ -228,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Insert the unit element before the bin icon
             targetGroup.insertBefore(unitElement, binIcon);
+            return unitElement
 
         } else {
             console.error(`Group with ID ${groupId} not found.`);
@@ -235,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to send the selected unit to the backend to be saved
-    function saveUnitToGroup(unit, group_id) {
+    function saveUnitToGroup(unit, group_id, unitElement) {
         console.log(unit, group_id)
         fetch('/addUnit', {
             method: 'POST',
@@ -253,6 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.success) {
                 console.log("Unit added successfully");
                 // Optionally show a success message
+                unitElement.setAttribute('data-key', data.element_id)
             } else {
                 console.error("Error adding unit:", data.error);
                 // Optionally show an error message

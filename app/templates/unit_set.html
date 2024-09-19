@@ -43,7 +43,7 @@
                 </p>
                 <!-- Units will be added here -->
                 {% for ele in group.group_elements %}
-                <div class="unit">
+                <div class="unit" data-key="{{ ele.id }}">
                     <span class="unit-name">{{ele.unit.name}} (ID: {{ele.unit.id}})</span>
                     <span class="unit-actions">
                         <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
