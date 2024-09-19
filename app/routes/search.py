@@ -23,9 +23,9 @@ def search_courses():
         return jsonify(courses)
     return jsonify([])
 
-# New route for group search
-@search.route('/search_groups', methods=['GET'])
-def search_groups():
+# New route for group specialisation
+@search.route('/search_specialisations', methods=['GET'])
+def search_specialisations():
     query = request.args.get('query', '')
     if query:
         results = Specialisation.query.filter(Specialisation.name.ilike(f"%{query}%")).all()
