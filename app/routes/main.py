@@ -1,6 +1,6 @@
 from flask import render_template, request
 from . import main  # Import the 'main' blueprint
-from ..models import Course, UnitSet, Specialisation, CourseSpecialisation
+from ..models import Course, UnitSet, Specialisation, CourseSpecialisation, Group
 from .. import db
 
 
@@ -41,4 +41,34 @@ def grouping():
 
 @main.route('/unit_set')
 def unit_set():
-    return render_template('unit_set.html')
+    item_type = request.args.get('type')
+    item_id = request.args.get('id')
+    if not item_type or not item_id:
+        return "Error: Type and ID are required", 400
+
+    if item_type == 'unitset':
+        # Fetch unit set data using item_id
+        unit_set = UnitSet.query.get(item_id)
+        unit_setData = unit_set.to_dict()
+        course = unit_set.course
+        courseData = course.to_dict()
+
+        groups = Group.query.filter_by(unit_set_id=item_id).all()
+
+        return render_template('unit_set.html', item=unit_setData, type='unitset', course = courseData, groups = groups)
+    
+    elif item_type == 'specialisation':
+        # Fetch specialization data using item_id
+        specialisation = Specialisation.query.get(item_id)
+        specialisationData = [specialisation.to_dict()]
+        course_specialisation = CourseSpecialisation.query.filter_by(specialisation_id=item_id).first()
+        if course_specialisation:
+            course = Course.query.get(course_specialisation.course_id)
+            courseData = course.to_dict()
+
+        groups = Group.query.filter_by(unit_set_id=item_id).all()
+
+        return render_template('unit_set.html', item=specialisationData, type='specialisation', course = courseData, courseData=courseData, groups = groups)
+    
+    else:
+        return "Error: Invalid type", 400

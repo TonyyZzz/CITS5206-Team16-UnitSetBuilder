@@ -79,7 +79,7 @@
                         <p id="group-caption" class="caption">{{ unit_set.description }}</p>
                     </div>
                     <div class="action-buttons">
-                        <a id="group-links" class="edit-link" href="{{ url_for('main.unit_set') }}"><button id="edit-button" class="action-button">Edit<i class="fas fa-edit"></i></a></button>
+                        <a id="group-links" class="edit-link" href="/unit_set?type=unitset&id={{ unit_set.id }}"><button id="edit-button" class="action-button">Edit<i class="fas fa-edit"></i></a></button>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="action-buttons">
                             <button class="edit-button action-button">
-                                <a id="group-links" class="edit-link" href="#unit-set-page">Edit<i class="fas fa-edit"></i></a>
+                                <a id="group-links" class="edit-link" href="/unit_set?type=specialization&id={{ specialization.id }}">Edit<i class="fas fa-edit"></i></a>
                             </button>
                             <button class="delete-button action-button" data-specialization-id="{{ specialization.id }}">
                                 <a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a>

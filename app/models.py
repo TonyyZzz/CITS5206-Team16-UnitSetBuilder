@@ -19,6 +19,15 @@ class Course(db.Model):
     unit_sets = db.relationship('UnitSet', backref='course', lazy=True)
     course_specialisations = db.relationship('CourseSpecialisation', backref='course', lazy=True)
 
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'code': self.code,
+            'description': self.description
+        }
+
 class UnitSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -29,6 +38,13 @@ class UnitSet(db.Model):
     # Establish the relationship to Group with a foreign key
     groups = db.relationship('Group', backref='unit_set', lazy=True)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'note': self.note
+        }
 
 class Specialisation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +55,15 @@ class Specialisation(db.Model):
     note = db.Column(db.Text)
     groups = db.relationship('Group', backref='specialisation', lazy=True)
     course_specialisations = db.relationship('CourseSpecialisation', backref='specialisation', lazy=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'code': self.code,
+            'description': self.description,
+            'note': self.note,
+        }
 
 
 class CourseSpecialisation(db.Model):
@@ -68,6 +93,17 @@ class Group(db.Model):
     children = db.relationship('Group', backref=db.backref('parent', remote_side=[id]), lazy=True)
 
     group_elements = db.relationship('GroupElement', backref='group', lazy=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'group_type': self.group_type,
+            'note': self.note,
+            'is_specialisation': self.is_specialisation,
+            'unit_set_id' : self.unit_set_id ,
+            'specialisation_id' : self.specialisation_id ,
+            'parent_group_id' : self.parent_group_id
+        }
 
 
 class GroupElement(db.Model):

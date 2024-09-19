@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to send the selected unit to the backend to be saved
-    function saveUnitToGroup(unit, group_id = 1) {
+    function saveUnitToGroup(unit, group_id) {
         console.log(unit, group_id)
         fetch('/addUnit', {
             method: 'POST',
@@ -220,4 +220,106 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error('Error:', error));
     }
+
+    
+    // GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
+    const groupButtons = document.querySelectorAll('.group-btn');
+    
+    groupButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const groupType = button.classList[1]; // Gets the group type from the class name
+            createGroupContainer(groupType);
+            addGroup(itemType, itemData['id'], groupType);
+        });
+    });
+
+    function createGroupContainer(groupType) {
+        const unitSet = document.querySelector('.unit-set');
+        
+        // Create a new div for the group
+        const newGroup = document.createElement('div');
+        newGroup.classList.add('unit-group', groupType + '-unit');
+        newGroup.innerHTML = `
+            <div class="group-header">
+                <h3>${capitalizeFirstLetter(groupType.replace('-', ' '))} Unit</h3>
+                <div class="group-icons">
+                    <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+                    <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
+                </div>
+            </div>
+            <p>Take all units from this group (24 points)
+                <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
+            </p>
+            <!-- Units will be added here -->
+            <img src="static/image/bin.png" alt="Delete Section Icon" class="bin-icon">
+        `;
+        
+        // Append the new group to the unit set container
+        unitSet.appendChild(newGroup);
+    }
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    console.log(courseData)
+    console.log(itemData)
+    // createGroup
+    function addGroup(type, item_id, group_type) {
+        
+        if (type === 'unitset') {
+            fetch('/add_group_to_unitset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'  // Indicate AJAX request
+                },
+                body: JSON.stringify({
+                    unit_set_id: item_id,
+                    is_specialization: false,
+                    group_type: group_type
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("group added to unitset successfully");
+                    // Optionally show a success message
+                } else {
+                    console.error("Error adding group:", data.error);
+                    // Optionally show an error message
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            fetch('/add_group_to_specialization', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'  // Indicate AJAX request
+                },
+                body: JSON.stringify({
+                    specialization_id: item_id,
+                    is_specialization: true,
+                    group_type: group_type
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("group added to specialization successfully");
+                    // Optionally show a success message
+                } else {
+                    console.error("Error adding group:", data.error);
+                    // Optionally show an error message
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+    }
+
+
+
+
 });
