@@ -36,13 +36,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Function to show suggestions for group search
+    function showGroupSuggestions() {
+        const input = document.getElementById('existingOption').value.toLowerCase();
+        const suggestions = document.getElementById('group-suggestions');
+        suggestions.innerHTML = '';  // Clear previous suggestions
+
+        // If input is empty, hide the suggestions list and return
+        if (input.trim() === '') {
+            suggestions.style.display = 'none'; // Hide suggestions
+            return;
+        }
+
+        // Fetch group suggestions from the server
+        fetch(`/search_groups?query=${encodeURIComponent(input)}`)
+            .then(response => response.json())
+            .then(groups => {
+                suggestions.style.display = 'block'; // Show suggestions if input is not empty
+
+                groups.forEach(group => {
+                    const suggestionItem = document.createElement('a');
+                    suggestionItem.href = "#";
+                    suggestionItem.classList.add('list-group-item', 'list-group-item-action');
+                    suggestionItem.innerHTML = `${group.name}`;
+                    suggestions.appendChild(suggestionItem);
+                });
+            })
+            .catch(error => console.error('Error fetching group search results:', error));
+    }
+
+    // Add the input event listener to the group search input field
+    document.getElementById('existingOption').addEventListener('input', showGroupSuggestions);
+
     // Handle form submission
     detailsForm.addEventListener('submit', (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         // Get specialization name
         const specializationName = document.getElementById('name').value.trim();
-        
+
         // Create the new content for detailsDisplay using template literals
         const detailsDisplayHtml = `
             <div class="group-details-section">

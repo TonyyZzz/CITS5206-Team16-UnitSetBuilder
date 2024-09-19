@@ -34,11 +34,15 @@
                             </select>
 
                             <!-- Section for selecting existing option -->
-                            <div id="existingOptionSection" style="display: none;">
-                                <p id="group-caption" class="caption">Select Existing Specialization Group</p>
-                                <label for="existingOption">Search existing specialization group:</label>
-                                <input type="text" id="name" name="existingOption" placeholder="Search existing options...">
-                            </div>
+<!-- Existing section in grouping-page.html -->
+<div id="existingOptionSection" style="display: none;">
+    <p id="group-caption" class="caption">Select Existing Specialization Group</p>
+    <label for="existingOption">Search existing specialization group:</label>
+    <input type="text" id="existingOption" name="existingOption" placeholder="Search existing options..." oninput="showGroupSuggestions()">
+    <div id="group-suggestions" class="list-group" style="display: none;"></div> <!-- Suggestions will be displayed here -->
+</div>
+
+
 
                             <!-- Section for adding a new option -->
                             <div id="newOptionSection" style="display: none;">

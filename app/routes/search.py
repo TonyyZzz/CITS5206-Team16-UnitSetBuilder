@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..models import Unit, Course  # Import both Unit and Course models
+from ..models import Unit, Course, Specialisation  # Ensure Group is imported
 
 # Existing blueprint
 search = Blueprint('search', __name__)
@@ -13,7 +13,7 @@ def search_units():
         results = []
     return jsonify([{'id': unit.id, 'name': unit.name} for unit in results])
 
-# New route for course search
+# Route for course search
 @search.route('/search_courses', methods=['GET'])
 def search_courses():
     query = request.args.get('query', '')
@@ -22,3 +22,15 @@ def search_courses():
         courses = [{'id': course.id, 'code': course.code, 'title': course.title} for course in results]
         return jsonify(courses)
     return jsonify([])
+
+# New route for group search
+@search.route('/search_groups', methods=['GET'])
+def search_groups():
+    query = request.args.get('query', '')
+    if query:
+        results = Specialisation.query.filter(Specialisation.name.ilike(f"%{query}%")).all()
+        groups = [{'id': spec.id, 'name': spec.name} for spec in results]
+        return jsonify(groups)
+    return jsonify([])
+
+
