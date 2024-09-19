@@ -8,7 +8,7 @@ def populate_dummy_data():
     # Use app context for database operations
     with app.app_context():
         # Check if the database is already populated to avoid duplication
-        if Unit.query.first():
+        if Unit.query.first() or Course.query.first():
             print("Database already has data. Skipping population.")
             return
 
@@ -30,10 +30,13 @@ def populate_dummy_data():
         db.session.add_all([unit1, unit2, unit3, unit4, unit5])
 
         # Create dummy courses
-        course1 = Course(title='Bachelor of Science')
-        course2 = Course(title='Bachelor of Engineering')
+        course1 = Course(title='Bachelor of Science', code='BS01', description='A program focused on science disciplines.')
+        course2 = Course(title='Bachelor of Engineering', code='BE01', description='A program focused on engineering disciplines.')
+        course3 = Course(title='Master of Information Technology', code='MIT01', description='Advanced studies in IT.')
+        course4 = Course(title='Master of Business Administration', code='MBA01', description='Advanced studies in business administration.')
+        course5 = Course(title='Doctor of Philosophy in Physics', code='PhDPhys01', description='Research-focused program in physics.')
 
-        db.session.add_all([course1, course2])
+        db.session.add_all([course1, course2, course3, course4, course5])
 
         # Create dummy specialisations
         spec1 = Specialisation(name='Mathematics Major', code='MATH', description='Specialization in Mathematics')

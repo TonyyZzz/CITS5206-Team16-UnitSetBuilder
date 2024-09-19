@@ -1,17 +1,24 @@
 from flask import Blueprint, request, jsonify
-from ..models import Unit  # Import the Unit model
+from ..models import Unit, Course  # Import both Unit and Course models
 
-# Define a new blueprint for search functionality
+# Existing blueprint
 search = Blueprint('search', __name__)
 
 @search.route('/search', methods=['GET'])
 def search_units():
-    query = request.args.get('query')  # Get the search query from the URL parameters
+    query = request.args.get('query')
     if query:
-        # Search by Unit ID or Unit Name
         results = Unit.query.filter((Unit.id == query) | (Unit.name.ilike(f"%{query}%"))).all()
     else:
         results = []
-
-    # Always return JSON response for search
     return jsonify([{'id': unit.id, 'name': unit.name} for unit in results])
+
+# New route for course search
+@search.route('/search_courses', methods=['GET'])
+def search_courses():
+    query = request.args.get('query', '')
+    if query:
+        results = Course.query.filter(Course.title.ilike(f"%{query}%")).all()
+        courses = [{'id': course.id, 'code': course.code, 'title': course.title} for course in results]
+        return jsonify(courses)
+    return jsonify([])

@@ -13,11 +13,11 @@ class User(db.Model, UserMixin):
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # New field
     title = db.Column(db.String(255), nullable=False)
+    code = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text, nullable=True)
     unit_sets = db.relationship('UnitSet', backref='course', lazy=True)
     course_specialisations = db.relationship('CourseSpecialisation', backref='course', lazy=True)
-
 
 class UnitSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)

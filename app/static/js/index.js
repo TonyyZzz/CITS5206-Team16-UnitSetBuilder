@@ -1,9 +1,3 @@
-const units = [
-    { id: '00', code: '10000', title: 'Master of Information Technology (coursework)', status: false, editable: true },
-    { id: '01', code: '10001', title: 'Master of Information Technology (AI Stream)', status: false, editable: false },
-    // You can add more units as needed
-];
-
 function showSuggestions() {
     const input = document.getElementById('search-input').value.toLowerCase();
     const suggestions = document.getElementById('suggestions');
@@ -15,42 +9,42 @@ function showSuggestions() {
         return;
     }
 
-    suggestions.style.display = 'block'; // Show suggestions if input is not empty
+    // Fetch suggestions from the server
+    fetch(`/search_courses?query=${encodeURIComponent(input)}`)
+        .then(response => response.json())
+        .then(courses => {
+            suggestions.style.display = 'block'; // Show suggestions if input is not empty
 
-    units.forEach(unit => {
-        if (unit.title.toLowerCase().includes(input)) {
-            const suggestionItem = document.createElement('a');
-            suggestionItem.href = "#";
-            suggestionItem.classList.add('list-group-item', 'list-group-item-action');
-            suggestionItem.innerHTML = `
-                ${unit.title} <span class="badge bg-success rounded-pill" onclick="addToTable('${unit.id}')">+</span>
-            `;
-            suggestions.appendChild(suggestionItem);
-        }
-    });
+            courses.forEach(course => {
+                const suggestionItem = document.createElement('a');
+                suggestionItem.href = "#";
+                suggestionItem.classList.add('list-group-item', 'list-group-item-action');
+                suggestionItem.innerHTML = `
+                    ${course.title} <span class="badge bg-success rounded-pill" onclick="addToTable('${course.id}', '${course.code}', '${course.title}')">+</span>
+                `;
+                suggestions.appendChild(suggestionItem);
+            });
+        })
+        .catch(error => console.error('Error fetching search results:', error));
 }
 
-function addToTable(unitId) {
-    const unit = units.find(u => u.id === unitId);
+function addToTable(courseId, courseCode, courseTitle) {
     const tableBody = document.getElementById('unit-table');
     const row = document.createElement('tr');
-    
+
     row.innerHTML = `
         <td>
-            ${unit.editable 
-                ? '<button class="btn btn-outline-secondary btn-sm status-button">✎</button>' 
-                : '<span class="text-danger">×</span>'
-            }
+            <button class="btn btn-outline-secondary btn-sm status-button">✎</button>
         </td>
-        <td>${unit.id}</td>
-        <td>${unit.code}</td>
-        <td>${unit.title}</td>
+        <td>${courseId}</td>
+        <td>${courseCode}</td>
+        <td>${courseTitle}</td>
         <td>
             <span class="checkbox-unchecked status-button" onclick="toggleCheckbox(this)"></span>
             <button class="btn btn-danger btn-sm status-button" onclick="removeFromTable(this)"><img src="https://cdn-icons-png.flaticon.com/512/3096/3096673.png" alt="Delete"></button>
         </td>
     `;
-    
+
     tableBody.appendChild(row);
 }
 
