@@ -1,3 +1,5 @@
+let selectedCourse = null;
+
 function showSuggestions() {
     const input = document.getElementById('search-input').value.toLowerCase();
     const suggestions = document.getElementById('suggestions');
@@ -20,12 +22,18 @@ function showSuggestions() {
                 suggestionItem.href = "#";
                 suggestionItem.classList.add('list-group-item', 'list-group-item-action');
                 suggestionItem.innerHTML = `
-                    ${course.title} <span class="badge bg-success rounded-pill" onclick="addToTable('${course.id}', '${course.code}', '${course.title}')">+</span>
+                    ${course.title} <span class="badge bg-success rounded-pill" onclick="selectCourse('${course.id}', '${course.code}', '${course.title}')">+</span>
                 `;
                 suggestions.appendChild(suggestionItem);
             });
         })
         .catch(error => console.error('Error fetching search results:', error));
+}
+
+function selectCourse(courseId, courseCode, courseTitle) {
+    selectedCourse = { id: courseId, code: courseCode, title: courseTitle };
+    console.log('Selected course:', selectedCourse);  // For debugging
+    addToTable(courseId, courseCode, courseTitle);  // Automatically add selected course to the table
 }
 
 function addToTable(courseId, courseCode, courseTitle) {
@@ -68,14 +76,12 @@ function removeFromTable(button) {
 }
 
 function createUnitSetBuilder() {
-    const checkboxes = document.querySelectorAll('.status-button');
-    const hasCheckedCourse = Array.from(checkboxes).some(box => box.innerHTML === '✓');
-
-    if (hasCheckedCourse) {
-        window.location.href = '{{ url_for("main.unit_set") }}';
+    if (selectedCourse) {
+        window.location.href = `/grouping-page?courseId=${selectedCourse.id}&courseTitle=${encodeURIComponent(selectedCourse.title)}&courseCode=${encodeURIComponent(selectedCourse.code)}`;
     } else {
-        alert('Please select at least one course.');
+        alert('Please select a course first.');
     }
 }
+
 
 document.getElementById('search-input').addEventListener('input', showSuggestions);
