@@ -7,8 +7,8 @@ from ..models import Specialisation, CourseSpecialisation, db  # Assuming models
 # blueprint
 specialisation = Blueprint('specialisation', __name__)
 
-@specialisation.route('/add-specialisation', methods=['POST'])
-def add_specialisation():
+@specialisation.route('/connect-specialisation', methods=['POST'])
+def connect_specialisation():
     data = request.get_json()
     course_id = data.get('course_id')
     specialization_id = data.get('specialization_id')
@@ -47,3 +47,34 @@ def delete_specialisation():
     db.session.commit()
 
     return jsonify(success=True, message='Specialization removed from course successfully.')
+
+@specialisation.route('/add-new-specialisation', methods=['POST'])
+def add_new_specialisation():
+    data = request.get_json()
+    course_id = data.get('course_id')
+    name = data.get('name')
+    code = data.get('code')
+    description = data.get('description')
+    outcomes = data.get('outcomes')
+    notes = data.get('notes')
+
+    if not course_id or not name or not code:
+        return jsonify(success=False, message='Course ID, Name, and Code are required.')
+
+    # Create a new specialization
+    new_specialisation = Specialisation(
+        name=name,
+        code=code,
+        description=description,
+        outcome=outcomes,
+        note=notes
+    )
+    db.session.add(new_specialisation)
+    db.session.commit()
+
+    # Link the specialization to the course
+    course_specialisation = CourseSpecialisation(course_id=course_id, specialisation_id=new_specialisation.id)
+    db.session.add(course_specialisation)
+    db.session.commit()
+
+    return jsonify(success=True, message='New specialization created and added to course successfully.', specialization_id=new_specialisation.id)

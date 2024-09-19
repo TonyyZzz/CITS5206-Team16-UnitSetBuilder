@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         console.log(specializationId, courseId);
         // Make the AJAX request
-        fetch('/add-specialisation', {
+        fetch('/connect-specialisation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,48 +104,100 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-        // Function to delete a specialization
-        function deleteSpecialisation(specialisationId, courseId) {
-            // Make the AJAX request to delete the specialization
-            fetch('/delete-specialisation', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    course_id: courseId,
-                    specialization_id: specialisationId
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Delete successful:', data.message);
-                    console.log(specialisationId)
+    // Function to delete a specialization
+    function deleteSpecialisation(specialisationId, courseId) {
+        // Make the AJAX request to delete the specialization
+        fetch('/delete-specialisation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                course_id: courseId,
+                specialization_id: specialisationId
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Delete successful:', data.message);
+                console.log(specialisationId)
 
-                    const groupSection = document.querySelector(`#detailsDisplay[data-specialization-id="${specialisationId}"]`);
-                    console.log(groupSection)
+                const groupSection = document.querySelector(`#detailsDisplay[data-specialization-id="${specialisationId}"]`);
+                console.log(groupSection)
 
-                    if (groupSection) {
-                        groupSection.remove();
-                    }                
-                } else {
-                    console.log('Error:', data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-    
-        // Example usage: Attach event listener to delete buttons
-        document.querySelectorAll('.delete-button').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-                const specializationId = parseInt(button.getAttribute('data-specialization-id'), 10);
-                // Call the delete function with the retrieved course ID and specialization ID
-                deleteSpecialisation(specializationId, courseId);
-            });
+                if (groupSection) {
+                    groupSection.remove();
+                }                
+            } else {
+                console.log('Error:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
+    }
+    
+    // Example usage: Attach event listener to delete buttons
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const specializationId = parseInt(button.getAttribute('data-specialization-id'), 10);
+            // Call the delete function with the retrieved course ID and specialization ID
+            deleteSpecialisation(specializationId, courseId);
+        });
+    });
+
+    // Function to collect form data for new specialization
+    function collectFormData() {
+        const newOptionSection = document.getElementById('newOptionSection');
+
+        return {
+            course_id: courseId,
+            name: newOptionSection.querySelector('#name').value.trim(),
+            code: newOptionSection.querySelector('#code').value.trim(),
+            description: newOptionSection.querySelector('#description').value.trim(),
+            outcomes: newOptionSection.querySelector('#outcomes').value.trim(),
+            notes: newOptionSection.querySelector('#notes').value.trim()
+        };
+    }
+
+
+    document.getElementById('detailsForm').addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+
+        const formData = collectFormData();
+
+        console.log(formData);
+
+        // Make the AJAX request
+        fetch('/add-new-specialisation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Specialization added:', data.message);
+                // Optionally refresh the page or update the UI to show the new specialization
+                window.location.reload();
+            } else {
+                console.log('Error:', data.message);
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while adding the specialization.');
+        });
+    });
+
+
+
+
+
 
 });
