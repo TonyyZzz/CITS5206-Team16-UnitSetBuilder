@@ -57,10 +57,10 @@ def unit_set():
 
         return render_template('unit_set.html', item=unit_setData, type='unitset', course = courseData, groups = groups)
     
-    elif item_type == 'specialisation':
+    elif item_type == 'specialization':
         # Fetch specialization data using item_id
         specialisation = Specialisation.query.get(item_id)
-        specialisationData = [specialisation.to_dict()]
+        specialisationData = specialisation.to_dict()
         course_specialisation = CourseSpecialisation.query.filter_by(specialisation_id=item_id).first()
         if course_specialisation:
             course = Course.query.get(course_specialisation.course_id)
