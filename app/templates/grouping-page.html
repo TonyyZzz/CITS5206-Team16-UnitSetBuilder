@@ -11,7 +11,7 @@
 
     <div class="grouping">
         <!-- Dynamic Course Header -->
-        <h2 class="grouping-header">{{ course_title }} [{{ course_code }}]</h2>
+        <h2 class="grouping-header">{{ course.title }} [{{ course.code }}]</h2>
 
         <div class="add-group-card">
             <h2 class="add-group-header">Add A New Group</h2>
@@ -34,15 +34,13 @@
                             </select>
 
                             <!-- Section for selecting existing option -->
-<!-- Existing section in grouping-page.html -->
-<div id="existingOptionSection" style="display: none;">
-    <p id="group-caption" class="caption">Select Existing Specialization Group</p>
-    <label for="existingOption">Search existing specialization group:</label>
-    <input type="text" id="existingOption" name="existingOption" placeholder="Search existing options..." oninput="showGroupSuggestions()">
-    <div id="group-suggestions" class="list-group" style="display: none;"></div> <!-- Suggestions will be displayed here -->
-</div>
-
-
+                            <!-- Existing section in grouping-page.html -->
+                            <div id="existingOptionSection" style="display: none;">
+                                <p id="group-caption" class="caption">Select Existing Specialization Group</p>
+                                <label for="existingOption">Search existing specialization group:</label>
+                                <input type="text" id="existingOption" name="existingOption" placeholder="Search existing options..." oninput="showGroupSuggestions()">
+                                <div id="group-suggestions" class="list-group" style="display: none;"></div> <!-- Suggestions will be displayed here -->
+                            </div>
 
                             <!-- Section for adding a new option -->
                             <div id="newOptionSection" style="display: none;">
@@ -70,23 +68,41 @@
         <div class="course-card">
             <div class="course-heading-container">
                 <!-- Dynamic Course Header -->
-                <h2 class="course-card-header">{{ course_title }} [{{ course_code }}]</h2>
+                <h2 class="course-card-header">{{ course.title }} [{{ course.code }}]</h2>
                 <a href="#file" class="download-button" download>Download<i class="fa-solid fa-circle-down"></i></a>
             </div>
             <div class="groups-card">
                 <div class="group-details-section">
                     <div class="fas fa-bars" id="expand-button">
                         <!-- Dynamic Course Header -->
-                        <h2 class="course-card-header">{{ course_title }}</h2>
-                        <p id="group-caption" class="caption">Edit and set units for this group</p>
+                        <h2 class="course-card-header">{{ unit_set.title }}</h2>
+                        <p id="group-caption" class="caption">{{ unit_set.description }}</p>
                     </div>
                     <div class="action-buttons">
                         <a id="group-links" class="edit-link" href="{{ url_for('main.unit_set') }}"><button id="edit-button" class="action-button">Edit<i class="fas fa-edit"></i></a></button>
-                        <button id="delete-button" class="action-button"><a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a></button>
                     </div>
                 </div>
             </div>
-            <div id="detailsDisplay" style="display: none;"></div>
+            {% if specialisations %}
+                {% for specialization in specialisations %}
+                <div id="detailsDisplay"></div>
+                    <div class="group-details-section">
+                        <div class="fas fa-bars" id="expand-button">
+                            <h2 class="course-card-header">{{ specialization.name }}</h2>
+                            <p id="group-caption" class="caption success-message">{{ specialization.description }}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="edit-button action-button">
+                                <a id="group-links" class="edit-link" href="#unit-set-page">Edit<i class="fas fa-edit"></i></a>
+                            </button>
+                            <button class="delete-button action-button">
+                                <a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

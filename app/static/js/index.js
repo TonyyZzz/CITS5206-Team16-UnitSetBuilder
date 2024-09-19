@@ -77,7 +77,8 @@ function removeFromTable(button) {
 
 function createUnitSetBuilder() {
     if (selectedCourse) {
-        window.location.href = `/grouping-page?courseId=${selectedCourse.id}&courseTitle=${encodeURIComponent(selectedCourse.title)}&courseCode=${encodeURIComponent(selectedCourse.code)}`;
+        // Set the action URL with the course ID
+        window.location.href = `/grouping-page?courseId=${selectedCourse.id}`;
     } else {
         alert('Please select a course first.');
     }
