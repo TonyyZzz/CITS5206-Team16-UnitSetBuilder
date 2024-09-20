@@ -4,8 +4,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Set Checklist</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/unit_set.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="{{ url_for('static', filename='js/unit_set.js') }}"></script>
 
+
+    <div class="progress-container"></div>
+        <div class="progress-bar nav nav-tabs">
+            <div class="nav-item">
+                <a href="{{ url_for('main.course') }}" class="nav-link completed" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
+            </div>
+            <div class="nav-item">
+                <a href="{{ url_for('main.grouping') }}" class="nav-link completed" data-index="1">GROUPING <i class="bi bi-2-circle-fill"></i></a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link active" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
+            </div>
+        </div>
+    </div>
     <div class="container">
             <h1>Unit Set checklist</h1>
             <h2>Master of Information Technology: Artificial Intelligence (AI) Stream</h2>
