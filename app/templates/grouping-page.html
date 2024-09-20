@@ -1,13 +1,31 @@
 <!-- app/templates/grouping-page.html -->
 {% extends "base.html" %}
 {% block content %}
+<body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/grouping-page.css') }}">
-    <script src="{{ url_for('static', filename='js/grouping.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/grouping.js')
+    }}"></script>
+    <div class="progress-container"></div>
+            <div class="progress-bar nav nav-tabs">
+                <div class="nav-item">
+                    <a href="{{ url_for('main.course') }}" class="nav-link completed" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link active" data-index="1">GROUPING <i class="bi bi-2-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
 
     <div class="grouping">
         <!-- Dynamic Course Header -->
@@ -105,4 +123,5 @@
             {% endif %}
         </div>
     </div>
+</body>
 {% endblock %}
