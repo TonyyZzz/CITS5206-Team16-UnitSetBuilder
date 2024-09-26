@@ -51,7 +51,7 @@ class UnitSet(db.Model):
 class Specialisation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    code = db.Column(db.String(50), nullable=False)
+    code = db.Column(db.String(50), nullable=True)
     description = db.Column(db.Text)
     outcome = db.Column(db.Text)
     note = db.Column(db.Text)
@@ -130,8 +130,7 @@ class GroupElement(db.Model):
 
 class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)  # New field added
-    # Additional fields for Unit model should go here
-    # New fields
+    name = db.Column(db.String(255), nullable=False)
     code = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=True)
+    credit_points = db.Column(db.Integer, nullable=False)
