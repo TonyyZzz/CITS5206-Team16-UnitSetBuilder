@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask,request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Config
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 # from flask_wtf import CSRFProtect
 
@@ -28,6 +28,14 @@ def create_app(config_name):
     login_manager.init_app(app)
     bcrypt = Bcrypt(app)
     # csrf.init_app(app)
+
+
+    @app.before_request
+    def require_login():
+        # If the user is not authenticated and the endpoint is not the login page, redirect to the login page
+        if not current_user.is_authenticated and request.endpoint not in ['auth.login', 'static']:
+            return redirect(url_for('auth.login'))
+
 
     # Import and register blueprints
     from .routes.main import main as main_blueprint
