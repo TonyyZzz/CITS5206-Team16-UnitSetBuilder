@@ -36,58 +36,29 @@ def addUnit():
         db.session.add(new_group_element)
         db.session.commit()
 
-        return jsonify({"success": True})  # Send success response
+        return jsonify({"success": True, 'element_id': new_group_element.id})  # Send success response
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
     
-@unit.route('/editUnit/<int:element_id>', methods=['POST'])
-def editUnit(element_id):
-    try:
-        # Retrieve the existing GroupElement by ID
-        group_element = GroupElement.query.get(element_id)
-        if not group_element:
-            flash(f'GroupElement with ID {element_id} does not exist', 'error')
-            return redirect(url_for('main.unit_set'))
+@unit.route('/delete_unit', methods=['DELETE'])
+def delete_unit():
+    # Get the unit ID from the request body (JSON)
+    data = request.get_json()
+    unit_id = data.get('unit_id')
 
-        # Get updated data from the form
-        research_flag = bool(request.form.get('research_flag', False))
-        capstone_flag = bool(request.form.get('capstone_flag', False))
+    if not unit_id:
+        return jsonify({'success': False, 'error': 'No unit ID provided'}), 400
 
-        # Update the GroupElement fields
-        group_element.research_flag = research_flag
-        group_element.capstone_flag = capstone_flag
+    # Find the GroupElement or Unit by its ID and delete it
+    unit = GroupElement.query.filter_by(id=unit_id).first()
 
-        # Save changes to the database
-        db.session.commit()
+    if not unit:
+        return jsonify({'success': False, 'error': 'Unit not found'}), 404
 
-        flash('GroupElement updated successfully!', 'success')
-        return redirect(url_for('groupelements.view_group_elements'))
+    # Delete the unit from the database
+    db.session.delete(unit)
+    db.session.commit()
 
-    except Exception as e:
-        db.session.rollback()
-        flash(f'Error editing GroupElement: {str(e)}', 'error')
-        return redirect(url_for('main.unit_set'))
-    
-@unit.route('/deleteUnit/<int:element_id>', methods=['POST'])
-def deleteUnit(element_id):
-    try:
-        # Retrieve the GroupElement by ID
-        group_element = GroupElement.query.get(element_id)
-        if not group_element:
-            flash(f'GroupElement with ID {element_id} does not exist', 'error')
-            return redirect(url_for('groupelements.view_group_elements'))
-
-        # Delete the GroupElement
-        db.session.delete(group_element)
-        db.session.commit()
-
-        flash('GroupElement deleted successfully!', 'success')
-        return redirect(url_for('main.unit_set'))
-
-    except Exception as e:
-        db.session.rollback()
-        flash(f'Error deleting GroupElement: {str(e)}', 'error')
-        return redirect(url_for('main.unit_set'))
-
+    return jsonify({'success': True, 'message': 'Unit deleted successfully'})

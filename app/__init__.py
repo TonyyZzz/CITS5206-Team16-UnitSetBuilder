@@ -45,6 +45,9 @@ def create_app(config_name):
     from .routes.unit import unit as unit_blueprint
     app.register_blueprint(unit_blueprint)
 
+    from .routes.specialisation import specialisation as specialisation_bp
+    app.register_blueprint(specialisation_bp)
+
     with app.app_context():
         from . import models
 

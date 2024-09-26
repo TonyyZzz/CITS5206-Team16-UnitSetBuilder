@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>{% block title %}Unit Set Builder{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Including index.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <script src="/app/static/js/index.js"></script>  
+</head>
+<body>
+    <!-- Main Page Content -->
+        <div class="progress-container"></div>
+            <div class="progress-bar nav nav-tabs">
+                <div class="nav-item">
+                    <a class="nav-link active" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="1">GROUPING <i class="bi bi-2-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+        <h2 class="course-header">Select Course</h2>
+
+        <!-- Card for Content -->
+        <div class="card p-3 position-relative">
+            <input id="search-input" type="search" class="form-control mb-3" placeholder="🔍 Search for a Course">
+            <div id="suggestions" class="list-group"></div>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>ID</th>
+                        <th>Code</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="unit-table">
+                    <!-- Table rows dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-4">
+            <!-- Update the button to navigate to unit_set.html -->
+            <button class="btn btn-primary" style="background-color: #28348B; border:none; float:right; font-size: 20px;margin-right:80px"
+            ><a style="text-decoration: none; color: white;" href="{{url_for('main.grouping')}}">Create Grouping ➜</a></button>
+        </div>
+    </div>
+
+    <!-- Footer consistent with login.html
+    <footer style="background-color: #333; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0;">
+        <p>&copy; 2024 Unit Set Builder</p>
+    </footer> -->
+
+    <!-- Including Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Including index.js -->
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+{% endblock %}

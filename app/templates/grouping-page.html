@@ -1,41 +1,127 @@
 <!-- app/templates/grouping-page.html -->
 {% extends "base.html" %}
 {% block content %}
+<body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/grouping-page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/grouping.js')
+    }}"></script>
+    <div class="progress-container"></div>
+            <div class="progress-bar nav nav-tabs">
+                <div class="nav-item">
+                    <a href="{{ url_for('main.course') }}" class="nav-link completed" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link active" data-index="1">GROUPING <i class="bi bi-2-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
+                </div>
+            </div>
+        </div>
+
     <div class="grouping">
-        <h2 class="grouping-header">Master of Information Technology (coursework) [62510]</h2>
+        <!-- Dynamic Course Header -->
+        <h2 class="grouping-header">{{ course.title }} [{{ course.code }}]</h2>
+
         <div class="add-group-card">
             <h2 class="add-group-header">Add A New Group</h2>
             <div class="group-add-section">
                 <p class="caption">Select the group you want to add:</p>
                 <button id="additional-group-button" class="button-links"><a id="group-links" class="additional-grouping-link" href="#additional-grouping">Additional Grouping<i class="fa-solid fa-circle-plus"></i></a></button>
                 <button id="specialization-button" class="button-links"><a id="group-links" class="Specialization-link" href="#specialization">Specialization<i class="fa-solid fa-circle-plus"></i></a></button>
+                <div id="popup" class="popup">
+                    <div class="popup-content">
+                        <div class="popup-header">
+                            <p id="group-caption" class="caption">Add Specialization Group</p>
+                            <span id="closePopupBtn" class="close">&times;</span>
+                        </div>
+                        <form id="detailsForm">
+                            <label for="optionSelect">Do you want to create a new group or add an existing group?</label>
+                            <select id="optionSelect" required name="optionSelect">
+                                <option class="dropdown-options" default value="default">--Select an option--</option>
+                                <option class="dropdown-options" value="select">Select existing group</option>
+                                <option class="dropdown-options" value="add">Create a new group</option>
+                            </select>
+
+                            <!-- Section for selecting existing option -->
+                            <!-- Existing section in grouping-page.html -->
+                            <div id="existingOptionSection" style="display: none;">
+                                <p id="group-caption" class="caption">Select Existing Specialization Group</p>
+                                <label for="existingOption">Search existing specialization group:</label>
+                                <input type="text" id="existingOption" name="existingOption" placeholder="Search existing options..." oninput="showGroupSuggestions()">
+                                <div id="group-suggestions" class="list-group" style="display: none;"></div> <!-- Suggestions will be displayed here -->
+                            </div>
+
+                            <!-- Section for adding a new option -->
+                            <div id="newOptionSection" style="display: none;">
+                                <p id="group-caption" class="caption">Create A New Specialization Group</p>
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" placeholder="Enter specialization name..."><br>
+                                <label for="code">Code:</label>
+                                <input type="text" id="code" name="code" placeholder="Enter code..."><br>
+                                <label for="description">Description:</label>
+                                <input type="description" id="description" name="description" placeholder="Enter description..."><br>
+                                <label for="outcomes">Outcomes:</label>
+                                <input type="outcomes" id="outcomes" name="outcomes" placeholder="Enter outcomes..."><br>
+                                <label for="notes">Notes:</label>
+                                <input type="notes" id="notes" name="notes" placeholder="Enter notes..."><br>
+                            </div>
+
+                            <button type="submit">Add Group</button>
+                        </form>
+                    </div>
+                </div>
                 <button id="year-button" class="button-links"><a id="group-links" class="year-link" href="#year">Year<i class="fa-solid fa-circle-plus"></i></a></button>
             </div>
         </div>
+
         <div class="course-card">
             <div class="course-heading-container">
-                <h2 class="course-card-header">Master of Information Technology (coursework) [62510]</h2>
+                <!-- Dynamic Course Header -->
+                <h2 class="course-card-header">{{ course.title }} [{{ course.code }}]</h2>
                 <a href="#file" class="download-button" download>Download<i class="fa-solid fa-circle-down"></i></a>
             </div>
             <div class="groups-card">
-                <div class="group-add-section">
-                    <div class="fas fa-bars" id="expand-button"></div>
-                    <div class="group">
-                        <h2 class="course-card-header">Master of Information Technology</h2>
-                        <p id="group-caption" class="caption">Edit and set units for this group</p>
+                <div class="group-details-section">
+                    <div class="fas fa-bars" id="expand-button">
+                        <!-- Dynamic Course Header -->
+                        <h2 class="course-card-header">{{ unit_set.title }}</h2>
+                        <p id="group-caption" class="caption">{{ unit_set.description }}</p>
                     </div>
                     <div class="action-buttons">
-                        <button id="edit-button" class="action-button"><a id="group-links" class="edit-link" href="#unit-set-page">Edit<i class="fas fa-edit"></i></a></button>
-                        <button id="delete-button" class="action-button"><a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a></button>
+                        <a id="group-links" class="edit-link" href="/unit_set?type=unitset&id={{ unit_set.id }}"><button id="edit-button" class="action-button">Edit<i class="fas fa-edit"></i></a></button>
                     </div>
                 </div>
-            </div> 
+            </div>
+            {% if specializations %}
+                {% for specialization in specializations %}
+                <div id="detailsDisplay" data-specialization-id="{{ specialization.id }}">
+                    <div class="group-details-section">
+                        <div class="fas fa-bars" id="expand-button">
+                            <h2 class="course-card-header">{{ specialization.name }}</h2>
+                            <p id="group-caption" class="caption success-message">{{ specialization.description }}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="edit-button action-button">
+                                <a id="group-links" class="edit-link" href="/unit_set?type=specialization&id={{ specialization.id }}">Edit<i class="fas fa-edit"></i></a>
+                            </button>
+                            <button class="delete-button action-button" data-specialization-id="{{ specialization.id }}">
+                                <a id="group-links" class="delete-link" href="#delete-group">Delete<i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
+</body>
 {% endblock %}

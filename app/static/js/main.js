@@ -6,3 +6,17 @@ $(document).ready(function() {
         $('.top-navigation').toggleClass('active');
     });
 });
+
+$(document).ready(function() {
+    $.ajax({
+        url: '/greeting',  // Adjust to your route
+        method: 'GET',
+        success: function(response) {
+            $('#greeting').html(response.message + response.icon);
+        },
+        error: function() {
+            let fallbackMessage = "Hello! Welcome to our site!";
+            $('#greeting').html(fallbackMessage); // Fallback in case of error
+        }
+    });
+});
