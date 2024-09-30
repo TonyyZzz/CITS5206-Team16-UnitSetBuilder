@@ -8,7 +8,7 @@ class BaseTestCase(unittest.TestCase):
     def setUpClass(cls):
         """Executed once before any test methods in the class."""
         # Create the Flask app and set up the testing configuration
-        cls.app = create_app(config_name='TESTING')
+        cls.app = create_app(config_name='testing')
         cls.app_context = cls.app.app_context()
         cls.app_context.push()
         cls.client = cls.app.test_client()
