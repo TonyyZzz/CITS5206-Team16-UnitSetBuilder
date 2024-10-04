@@ -514,50 +514,103 @@ function addUnitToSet(unit, groupId) {
     }
 }
 
-// When a unit is removed, recalculate points for the Core group immediately after the unit is removed
-  // When a unit is removed, recalculate points for the Core group immediately after the unit is removed
-    document.body.addEventListener("click", function (e) {
-        if (e.target.closest(".remove-btn")) {
-            const button = e.target.closest(".remove-btn");
-            const unitElement = button.closest('.unit');
-            const groupId = unitElement.closest(".unit-group").getAttribute('data-group-id');
-            const dataKey = unitElement.getAttribute('data-key');
+// Use event delegation on the .unit-set container
+document.querySelector('.unit-set').addEventListener("click", function (e) {
+    if (e.target.closest(".remove-btn")) {
+        const button = e.target.closest(".remove-btn");
+        const unitElement = button.closest('.unit');
+        const groupElement = button.closest('.unit-group');
 
-            if (unitElement) {
-                // Send an AJAX request to delete the unit from the database
-                fetch('/delete_unit', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({
-                        unit_id: dataKey
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log("Unit deleted successfully from the database.");
-                        unitElement.remove();
+        console.log("Unit element found:", unitElement);
+        console.log("Group element found:", groupElement);
 
-                        // Immediately recalculate points for the Core group after removing the unit
-                        const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
-                        if (targetGroup.classList.contains('core-unit')) {
-                            recalculateCoreGroupPoints(groupId);
-                        }
-                    } else {
-                        console.error("Error deleting unit:", data.error);
-                    }
+        const groupId = groupElement ? groupElement.getAttribute('data-group-id') : null;
+        const dataKey = unitElement ? unitElement.getAttribute('data-key') : null;
+
+        console.log("Removing unit. Unit element:", unitElement);
+        console.log("Group element:", groupElement);
+        console.log("Group ID:", groupId);
+        console.log("Data key:", dataKey);
+
+        if (unitElement && groupId && dataKey) {
+            // Send an AJAX request to delete the unit from the database
+            fetch('/delete_unit', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    unit_id: dataKey,
+                    group_id: groupId
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Unit deleted successfully from the database.");
+                    unitElement.remove();
+
+                    // Recalculate points for the group after removing the unit
+                    recalculateCoreGroupPoints(groupId);
+                } else {
+                    console.error("Error deleting unit:", data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            console.error("Missing data for unit removal. Unit element:", unitElement, "Group ID:", groupId, "Data key:", dataKey);
+
+            if (groupElement) {
+                console.log("Group element HTML:", groupElement.outerHTML);
+            } else {
+                console.error("Group element not found");
+                console.log("Clicked element:", e.target);
+                console.log("Button element:", button);
+                console.log("DOM structure:", this.outerHTML);
             }
         }
-    });
+    }
+});
 
+// Function to recalculate Core Group points automatically
+function recalculateCoreGroupPoints(groupId) {
+    console.log("Recalculating points for group:", groupId);
+    fetch(`/calculate_points/${groupId}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Received data from calculate_points:", data);
+        if (data.success) {
+            const group = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+            if (group) {
+                const totalPoints = data.total_points;
+                const pointsText = group.querySelector(".points-value");
+                const pointsInput = group.querySelector(".edit-points-input");
 
+                if (pointsText && pointsInput) {
+                    console.log("Updating points for group", groupId, "to", totalPoints);
+                    // Update the points in the DOM
+                    pointsText.textContent = totalPoints;
+                    pointsInput.value = totalPoints;
+                } else {
+                    console.error("Points elements not found in group:", groupId);
+                }
+            } else {
+                console.error("Group element not found for ID:", groupId);
+            }
+        } else {
+            console.error("Error calculating points:", data.error);
+        }
+    })
+    .catch(error => console.error("Error in recalculateCoreGroupPoints:", error));
+}
 
 });
 
