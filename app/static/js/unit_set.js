@@ -575,42 +575,56 @@ document.querySelector('.unit-set').addEventListener("click", function (e) {
     }
 });
 
-// Function to recalculate Core Group points automatically
-function recalculateCoreGroupPoints(groupId) {
-    console.log("Recalculating points for group:", groupId);
-    fetch(`/calculate_points/${groupId}`, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Received data from calculate_points:", data);
-        if (data.success) {
-            const group = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
-            if (group) {
-                const totalPoints = data.total_points;
-                const pointsText = group.querySelector(".points-value");
-                const pointsInput = group.querySelector(".edit-points-input");
+   // New function to initialize group points
+    function initializeGroupPoints() {
+        const groups = document.querySelectorAll('.unit-group');
+        groups.forEach(group => {
+            const groupId = group.getAttribute('data-group-id');
+            if (groupId) {
+                recalculateCoreGroupPoints(groupId);
+            }
+        });
+    }
 
-                if (pointsText && pointsInput) {
-                    console.log("Updating points for group", groupId, "to", totalPoints);
-                    // Update the points in the DOM
-                    pointsText.textContent = totalPoints;
-                    pointsInput.value = totalPoints;
+    // Modified recalculateCoreGroupPoints function
+    function recalculateCoreGroupPoints(groupId) {
+        console.log("Calculating points for group:", groupId);
+        fetch(`/calculate_points/${groupId}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Received data from calculate_points:", data);
+            if (data.success) {
+                const group = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+                if (group) {
+                    const totalPoints = data.total_points;
+                    const pointsText = group.querySelector(".points-value");
+                    const pointsInput = group.querySelector(".edit-points-input");
+
+                    if (pointsText && pointsInput) {
+                        console.log("Updating points for group", groupId, "to", totalPoints);
+                        // Update the points in the DOM
+                        pointsText.textContent = totalPoints;
+                        pointsInput.value = totalPoints;
+                    } else {
+                        console.error("Points elements not found in group:", groupId);
+                    }
                 } else {
-                    console.error("Points elements not found in group:", groupId);
+                    console.error("Group element not found for ID:", groupId);
                 }
             } else {
-                console.error("Group element not found for ID:", groupId);
+                console.error("Error calculating points:", data.error);
             }
-        } else {
-            console.error("Error calculating points:", data.error);
-        }
-    })
-    .catch(error => console.error("Error in recalculateCoreGroupPoints:", error));
-}
+        })
+        .catch(error => console.error("Error in recalculateCoreGroupPoints:", error));
+    }
+
+    // Call initializeGroupPoints when the page loads
+    initializeGroupPoints();
 
 });
 
