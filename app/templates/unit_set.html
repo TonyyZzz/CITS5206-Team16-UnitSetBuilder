@@ -64,6 +64,11 @@
                 <div class="unit" data-key="{{ ele.id }}">
                     <span class="unit-name">{{ele.unit.name}} (ID: {{ele.unit.id}})</span>
                     <span class="unit-actions">
+                        {% if ele.capstone_flag %}
+                        <button class="capstone-btn"><img src="/static/image/star.png" alt="star Icon"></button>
+                        {% else %}
+                        <button class="capstone-btn"><img src="/static/image/unstar.png" alt="Unstar Icon"></button>
+                        {% endif %}
                         <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
                         <button class="remove-btn" data-unit-id="unit-{{ele.id}}"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
                     </span>
