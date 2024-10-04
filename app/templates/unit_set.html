@@ -56,9 +56,13 @@
                         <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
                     </div>
                 </div>
-                <p>Take all units from this group (24 points)
-                    <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
-                </p>
+<p>Take all units from this group (<span class="points-value">24</span> points)
+    <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
+</p>
+<input type="text" class="edit-points-input" value="0" size="2" style="display:none;">
+
+
+
                 <!-- Units will be added here -->
                 {% for ele in group.group_elements %}
                 <div class="unit" data-key="{{ ele.id }}">
