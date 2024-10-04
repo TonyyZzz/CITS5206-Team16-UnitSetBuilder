@@ -236,24 +236,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 console.log("Search results:", data);  // Debugging: log the data received
 
-                // Show results inline
-                if (data.length > 0) {
-                    data.forEach(unit => {
-                        const item = document.createElement("div");
-                        item.className = "search-result-item";
-                        item.textContent = `${unit.name} (ID: ${unit.id})`;
+ // Show results inline
+        if (data.length > 0) {
+            data.forEach(unit => {
+                const item = document.createElement("div");
+                item.className = "search-result-item";
+                item.textContent = `${unit.name} (ID: ${unit.id})`;
 
-                        // Add click event to add the selected unit to the unit set
-                        item.addEventListener("click", function () {
-                            const unitElement = addUnitToSet(unit, groupId);  // Function to add unit
-                            saveUnitToGroup(unit, groupId, unitElement); // Function to add unit to database
-                            modal.style.display = "none";
-                            resultContainer.innerHTML = "";  // Clear results after selection
-                        });
+                // Add click event to add the selected unit to the unit set
+                item.addEventListener("click", function () {
+                    const unitElement = createUnitElement(unit);
+                    saveUnitToGroup(unit, groupId, unitElement);
+                    modal.style.display = "none";
+                    resultContainer.innerHTML = "";  // Clear results after selection
+                });
 
-                        resultContainer.appendChild(item);
-                    });
-                } else {
+                resultContainer.appendChild(item);
+            });
+        } else {
                     const noResults = document.createElement("div");
                     noResults.className = "no-results";
                     noResults.textContent = "No units found.";
@@ -265,6 +265,22 @@ document.addEventListener("DOMContentLoaded", function () {
             resultContainer.innerHTML = ""; // Clear results if query is too short
         }
     });
+
+      // Function to create a unit element without adding it to the DOM
+    function createUnitElement(unit) {
+        const unitElement = document.createElement("div");
+        unitElement.className = "unit";
+        unitElement.id = `unit-${unit.id}`;
+        unitElement.draggable = true;
+        unitElement.innerHTML = `
+            <span class="unit-name">${unit.name} (ID: ${unit.id})</span>
+            <span class="unit-actions">
+                <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
+                <button class="remove-btn"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
+            </span>
+        `;
+        return unitElement;
+    }
 
     // Function to add the selected unit to the unit set
     function addUnitToSet(unit, groupId) {
@@ -298,32 +314,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Function to send the selected unit to the backend to be saved
-    function saveUnitToGroup(unit, group_id, unitElement) {
-        console.log(unit, group_id)
+    // Function to send the selected unit to the backend to be saved and add it to the DOM
+    function saveUnitToGroup(unit, groupId, unitElement) {
         fetch('/addUnit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'  // Indicate AJAX request
+                'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({
-                group_id: group_id,  // Pass the group ID
-                unit_id: unit.id    // Pass the selected unit ID
+                group_id: groupId,
+                unit_id: unit.id
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 console.log("Unit added successfully");
-                // Optionally show a success message
-                unitElement.setAttribute('data-key', data.element_id)
+                unitElement.setAttribute('data-key', data.element_id);
+
+                // Add the unit to the DOM
+                const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+                if (targetGroup) {
+                    const binIcon = targetGroup.querySelector('.bin-icon');
+                    targetGroup.insertBefore(unitElement, binIcon);
+
+                    // Recalculate points only for core group
+                    if (targetGroup.classList.contains('core-unit')) {
+                        recalculateCoreGroupPoints(groupId);
+                    }
+                }
             } else {
                 console.error("Error adding unit:", data.error);
-                // Optionally show an error message
             }
         })
         .catch(error => console.error('Error:', error));
     }
+
 
 
     // CREATE GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -488,23 +515,47 @@ function addUnitToSet(unit, groupId) {
 }
 
 // When a unit is removed, recalculate points for the Core group immediately after the unit is removed
-document.body.addEventListener("click", function (e) {
-    if (e.target.closest(".remove-btn")) {
-        const button = e.target.closest(".remove-btn");
-        const unitElement = button.closest('.unit');
-        const groupId = unitElement.closest(".unit-group").getAttribute('data-group-id');
+  // When a unit is removed, recalculate points for the Core group immediately after the unit is removed
+    document.body.addEventListener("click", function (e) {
+        if (e.target.closest(".remove-btn")) {
+            const button = e.target.closest(".remove-btn");
+            const unitElement = button.closest('.unit');
+            const groupId = unitElement.closest(".unit-group").getAttribute('data-group-id');
+            const dataKey = unitElement.getAttribute('data-key');
 
-        if (unitElement) {
-            unitElement.remove();
+            if (unitElement) {
+                // Send an AJAX request to delete the unit from the database
+                fetch('/delete_unit', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        unit_id: dataKey
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Unit deleted successfully from the database.");
+                        unitElement.remove();
 
-            // Immediately recalculate points for the Core group after removing the unit
-            const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
-            if (targetGroup.classList.contains('core-unit')) {
-                recalculateCoreGroupPoints(groupId);
+                        // Immediately recalculate points for the Core group after removing the unit
+                        const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+                        if (targetGroup.classList.contains('core-unit')) {
+                            recalculateCoreGroupPoints(groupId);
+                        }
+                    } else {
+                        console.error("Error deleting unit:", data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             }
         }
-    }
-});
+    });
 
 
 
