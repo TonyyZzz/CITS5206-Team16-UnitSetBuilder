@@ -428,6 +428,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+// Function to recalculate Core Group points automatically
+function recalculateCoreGroupPoints(groupId) {
+    fetch(`/calculate_points/${groupId}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const group = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+            if (group) {
+                const totalPoints = data.total_points;
+                const pointsText = group.querySelector(".points-value");
+                const pointsInput = group.querySelector(".edit-points-input");
+
+                // Update the points in the DOM
+                pointsText.textContent = totalPoints;
+                pointsInput.value = totalPoints;
+            }
+        } else {
+            console.error("Error calculating points:", data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+// Function to add a unit to the Core group and update points after the DOM is modified
+function addUnitToSet(unit, groupId) {
+    const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+    if (targetGroup) {
+        const unitElement = document.createElement("div");
+        unitElement.className = "unit";
+        unitElement.id = `unit-${unit.id}`;
+        unitElement.draggable = true;
+        unitElement.innerHTML = `
+            <span class="unit-name">${unit.name} (ID: ${unit.id})</span>
+            <span class="unit-actions">
+                <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
+                <button class="remove-btn"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
+            </span>
+        `;
+        const binIcon = targetGroup.querySelector('.bin-icon');
+
+        // Insert the unit into the DOM first
+        targetGroup.insertBefore(unitElement, binIcon);
+
+        // Recalculate the points only after the unit is added to the DOM
+        if (targetGroup.classList.contains('core-unit')) {
+            recalculateCoreGroupPoints(groupId);  // Ensure points are recalculated after the DOM update
+        }
+
+        return unitElement;
+    } else {
+        console.error(`Group with ID ${groupId} not found.`);
+    }
+}
+
+// When a unit is removed, recalculate points for the Core group immediately after the unit is removed
+document.body.addEventListener("click", function (e) {
+    if (e.target.closest(".remove-btn")) {
+        const button = e.target.closest(".remove-btn");
+        const unitElement = button.closest('.unit');
+        const groupId = unitElement.closest(".unit-group").getAttribute('data-group-id');
+
+        if (unitElement) {
+            unitElement.remove();
+
+            // Immediately recalculate points for the Core group after removing the unit
+            const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
+            if (targetGroup.classList.contains('core-unit')) {
+                recalculateCoreGroupPoints(groupId);
+            }
+        }
+    }
+});
+
+
 
 });
 
