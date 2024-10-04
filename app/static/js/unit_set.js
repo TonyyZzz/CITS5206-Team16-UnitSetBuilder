@@ -152,6 +152,45 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+
+        // Event listener for making points editable when the edit icon is clicked
+    document.body.addEventListener("click", function (e) {
+        if (e.target.closest(".edit-icon")) {
+            const parent = e.target.closest("p");
+            const pointsDisplay = parent.querySelector(".points-value");
+            const pointsInput = parent.nextElementSibling;  // Assuming the input follows the paragraph
+
+            // Hide the points span and show the input field
+            pointsDisplay.style.display = "none";
+            pointsInput.style.display = "inline";
+            pointsInput.focus();  // Focus on the input for editing
+        }
+    });
+
+    // Event listener to save the points when clicking outside the input field
+    document.body.addEventListener("click", function (e) {
+        if (!e.target.closest(".edit-points-input") && !e.target.closest(".edit-icon")) {
+            document.querySelectorAll(".edit-points-input").forEach(function (input) {
+                if (input.style.display === "inline") {
+                    const pointsDisplay = input.previousElementSibling.querySelector(".points-value");
+                    const newValue = input.value;
+
+                    // Update the points display with the new value
+                    pointsDisplay.textContent = newValue;
+
+                    // Hide the input and show the updated points
+                    input.style.display = "none";
+                    pointsDisplay.style.display = "inline";
+
+                    // Optionally add AJAX here to save the new value to the backend
+                }
+            });
+        }
+    });
+
+
+
+
     // Add Unit Modal and Search Functionality
     const modal = document.getElementById("addUnitModal");
     const closeBtn = document.querySelector(".close-btn");
@@ -245,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </span>
             `;
 
-            
+
             // Find the bin icon in the target group
             const binIcon = targetGroup.querySelector('.bin-icon');
 
@@ -286,10 +325,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error:', error));
     }
 
-    
+
     // CREATE GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
     const groupButtons = document.querySelectorAll('.group-btn');
-    
+
     groupButtons.forEach(button => {
         button.addEventListener('click', () => {
             const groupType = button.classList[1]; // Gets the group type from the class name
@@ -298,31 +337,32 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function createGroupContainer(groupType) {
-        const unitSet = document.querySelector('.unit-set');
-        
-        // Create a new div for the group
-        const newGroup = document.createElement('div');
-        newGroup.classList.add('unit-group', groupType + '-unit');
-        newGroup.innerHTML = `
-            <div class="group-header">
-                <h3>${capitalizeFirstLetter(groupType.replace('-', ' '))} Unit</h3>
-                <div class="group-icons">
-                    <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
-                    <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
-                </div>
+   function createGroupContainer(groupType) {
+    const unitSet = document.querySelector('.unit-set');
+
+    // Create a new div for the group
+    const newGroup = document.createElement('div');
+    newGroup.classList.add('unit-group', groupType + '-unit');
+    newGroup.innerHTML = `
+        <div class="group-header">
+            <h3>${capitalizeFirstLetter(groupType.replace('-', ' '))} Unit</h3>
+            <div class="group-icons">
+                <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+                <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
             </div>
-            <p>Take all units from this group (24 points)
-                <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
-            </p>
-            <!-- Units will be added here -->
-            <img src="static/image/bin.png" alt="Delete Section Icon" class="bin-icon">
-        `;
-        
-        // Append the new group to the unit set container
-        unitSet.appendChild(newGroup);
-        return newGroup
-    }
+        </div>
+        <p>Take all units from this group (<span class="points-value">24</span> points)
+            <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
+        </p>
+        <input type="text" class="edit-points-input" value="24" size="2" style="display:none;">
+        <img src="static/image/bin.png" alt="Delete Section Icon" class="bin-icon">
+    `;
+
+    // Append the new group to the unit set container
+    unitSet.appendChild(newGroup);
+    return newGroup;
+}
+
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -332,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(itemData)
     // createGroup
     function addGroup(type, item_id, group_type, newGroup) {
-        
+
         if (type === 'unitset') {
             fetch('/add_group_to_unitset', {
                 method: 'POST',
@@ -390,3 +430,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+
