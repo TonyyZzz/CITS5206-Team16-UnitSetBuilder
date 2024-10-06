@@ -125,7 +125,7 @@ class GroupElement(db.Model):
             'research_flag': self.research_flag,
             'capstone_flag': self.capstone_flag,
             'unit_id': self.unit_id,
-            'unit_name': self.unit.name  # Access the unit's name via the relationship
+            'unit_detail': [self.unit.to_dict()]  # Access the unit's name via the relationship
         }
 
 class Unit(db.Model):
@@ -134,3 +134,12 @@ class Unit(db.Model):
     code = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=True)
     credit_points = db.Column(db.Integer, nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'code': self.code,
+            'description': self.description,
+            'credit_point': self.credit_points
+        }
