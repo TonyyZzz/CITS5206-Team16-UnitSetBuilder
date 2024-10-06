@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from .config import Config
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 # from flask_wtf import CSRFProtect
 
@@ -13,6 +13,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 bcrypt = Bcrypt()
 # csrf = CSRFProtect()
+
 
 def create_app(config_name):
     # Create the Flask application instance
@@ -29,6 +30,25 @@ def create_app(config_name):
     bcrypt = Bcrypt(app)
     # csrf.init_app(app)
 
+    # Require login for all routes except the login page
+    @app.before_request
+    def require_login():
+        # If the user is not authenticated and the endpoint is not the login page, redirect to the login page
+        if not current_user.is_authenticated and request.endpoint not in ['auth.login', 'static']:
+            return redirect(url_for('auth.login'))
+
+    # This command loads the data from the CSV files into the database
+    @app.cli.command("loaddata")
+    def loaddata():
+        from datafiles.db_handler import check_run
+        check_run()
+
+    # This command truncates the database
+    @app.cli.command("truncate")
+    def truncate():
+        from datafiles.db_handler import truncate
+        truncate()
+
     # Import and register blueprints
     from .routes.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -36,7 +56,7 @@ def create_app(config_name):
     from .routes.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
-    from .routes.search import search as search_blueprint  # Register the search blueprint
+    from .routes.search import search as search_blueprint
     app.register_blueprint(search_blueprint)
 
     from .routes.group import group as group_blueprint

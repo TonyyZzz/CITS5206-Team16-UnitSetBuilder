@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from app.models import User
@@ -11,7 +11,7 @@ def load_user(user_id):
         return User.query.get(user_id)
     except:
         return None
-    
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -28,6 +28,12 @@ def login():
     else:
         return render_template('login.html')
     
+@auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
+
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
