@@ -87,7 +87,7 @@
             <div class="course-heading-container">
                 <!-- Dynamic Course Header -->
                 <h2 class="course-card-header">{{ course.title }} [{{ course.code }}]</h2>
-                <a href="#file" class="download-button" download>Download<i class="fa-solid fa-circle-down"></i></a>
+                <a href="{{ url_for('output.download_course_pdf', course_id=course.id) }}" target="_blank" class="download-button">Preview<i class="fa-solid fa-circle-down"></i></a>
             </div>
             <div class="groups-card">
                 <div class="group-details-section">

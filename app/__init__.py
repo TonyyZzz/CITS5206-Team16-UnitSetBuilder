@@ -68,6 +68,9 @@ def create_app(config_name):
     from .routes.specialisation import specialisation as specialisation_bp
     app.register_blueprint(specialisation_bp)
 
+    from .routes.output import output as output_bp
+    app.register_blueprint(output_bp)
+
     with app.app_context():
         from . import models
 
