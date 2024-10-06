@@ -1,6 +1,6 @@
 from flask import request, redirect, url_for, flash, jsonify
 from . import group
-from ..models import Group, UnitSet, Specialisation
+from ..models import Group, UnitSet, Specialisation, GroupElement
 from .. import db
 
 @group.route('/add_group_to_unitset', methods = ['POST'])
@@ -64,3 +64,22 @@ def deleteGroup(group_id):
 
     # Return a success response
     return jsonify({'success': True, 'message': 'Group deleted successfully'})
+
+@group.route('/toggle_flag/<string:flag_field>/<int:element_id>', methods=['PATCH'])
+def toggleFlag(flag_field, element_id):
+    flag_field = flag_field.lower() + '_flag'
+    # Find the group element by id
+    group_element = GroupElement.query.get(element_id)
+    
+    # If the group element doesn't exist, return an error
+    if not group_element:
+        return jsonify({'success': False, 'error': 'Group element not found'}), 404
+
+    # Toggle the flag
+    current_value = getattr(group_element, flag_field)
+    # Convert 0 and 1 to boolean and then toggle
+    setattr(group_element, flag_field, 0 if current_value == 1 else 1)
+    db.session.commit()
+
+    # Return a success response
+    return jsonify({'success': True, 'message': f'{flag_field} toggled successfully'})

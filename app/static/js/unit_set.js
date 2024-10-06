@@ -1,15 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Star/Unstar Toggle
     document.body.addEventListener("click", function (e) {
-        if (e.target.closest(".fav-btn")) {
-            const button = e.target.closest(".fav-btn");
-            const isFav = button.getAttribute("data-fav") === "true";
-            const img = button.querySelector("img");
-
-            img.src = isFav ? "/static/image/unstar.png" : "/static/image/star.png";
-            button.setAttribute("data-fav", String(!isFav));
+        // Check if the clicked element has the class 'capstone-btn'
+        const capstoneButton = e.target.closest(".capstone-btn");
+        if (capstoneButton) {
+            // Get the closest parent element with the class 'unit'
+            const elementDiv = capstoneButton.closest('.unit');
+            const elementId = elementDiv.getAttribute('data-key');
+    
+            // Define the URL for the patch request
+            const url = `/toggle_flag/capstone/${elementId}`;
+    
+            // Prepare the patch request
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the UI update based on the response
+                    if (data.success) {
+                        // Toggle the icon
+                        const img = capstoneButton.querySelector('img');
+                        if (img) {
+                            const currentSrc = img.getAttribute('src');
+                            img.setAttribute('src', currentSrc === '/static/image/star.png' ? '/static/image/unstar.png' : '/static/image/star.png');
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
     });
+    
 
     // Delete Unit
     document.body.addEventListener("click", function (e) {
@@ -30,19 +59,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         unit_id: dataKey  // Send the unit ID as part of the request body
                     })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        console.log("Unit deleted successfully from the database.");
-                    } else {
-                        console.error("Error deleting unit:", data.error);
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("Unit deleted successfully from the database.");
+                        } else {
+                            console.error("Error deleting unit:", data.error);
+                            // Optionally handle the error (e.g., show an alert or revert the DOM change)
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                         // Optionally handle the error (e.g., show an alert or revert the DOM change)
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Optionally handle the error (e.g., show an alert or revert the DOM change)
-                });
+                    });
             }
         }
     });
@@ -55,9 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(groupId)
             if (groupId) {
                 deleteGroup(groupId).then(() => {
-                        section.remove(); // Remove from the UI if successful
+                    section.remove(); // Remove from the UI if successful
                 }).catch((error) => {
-                        console.error("Error deleting group:", error);
+                    console.error("Error deleting group:", error);
                 });
             }
         }
@@ -221,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Handle search input and show results inline
     searchInput.addEventListener("input", function () {
         const query = searchInput.value.trim();
-        const groupId = parseInt(modal.getAttribute('data-group-id'),10)
+        const groupId = parseInt(modal.getAttribute('data-group-id'), 10)
         if (query.length > 0) { // Ensure input length is sufficient
             fetch(`/search?query=${encodeURIComponent(query)}`, {
                 method: 'GET',
@@ -229,12 +258,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     'X-Requested-With': 'XMLHttpRequest'  // Indicate AJAX request
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                // Clear previous results
-                resultContainer.innerHTML = "";
+                .then(response => response.json())
+                .then(data => {
+                    // Clear previous results
+                    resultContainer.innerHTML = "";
 
-                console.log("Search results:", data);  // Debugging: log the data received
+                    console.log("Search results:", data);  // Debugging: log the data received
 
  // Show results inline
         if (data.length > 0) {
@@ -287,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create a new unit element (customize this as needed)
         const targetGroup = document.querySelector(`.unit-group[data-group-id="${groupId}"]`);
 
-        if (targetGroup){
+        if (targetGroup) {
             const unitElement = document.createElement("div");
             unitElement.className = "unit";
             unitElement.id = `unit-${unit.id}`;
@@ -299,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <button class="remove-btn"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
                 </span>
             `;
+
 
 
             // Find the bin icon in the target group
@@ -356,6 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // CREATE GROUPS HERE!!!!!!!!!!!!!!!!!!!!!!!!!!
     const groupButtons = document.querySelectorAll('.group-btn');
 
+
     groupButtons.forEach(button => {
         button.addEventListener('click', () => {
             const groupType = button.classList[1]; // Gets the group type from the class name
@@ -400,6 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // createGroup
     function addGroup(type, item_id, group_type, newGroup) {
 
+
         if (type === 'unitset') {
             fetch('/add_group_to_unitset', {
                 method: 'POST',
@@ -413,18 +445,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     group_type: group_type
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("group added to unitset successfully");
-                    // Optionally show a success message
-                    newGroup.setAttribute('data-group-id', data.group_id);
-                } else {
-                    console.error("Error adding group:", data.error);
-                    // Optionally show an error message
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("group added to unitset successfully");
+                        // Optionally show a success message
+                        newGroup.setAttribute('data-group-id', data.group_id);
+                    } else {
+                        console.error("Error adding group:", data.error);
+                        // Optionally show an error message
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         } else if (type === 'specialization') {
             console.log("I am here")
             fetch('/add_group_to_specialization', {
@@ -439,18 +471,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     group_type: group_type
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("group added to specialization successfully");
-                    // Optionally show a success message
-                    newGroup.setAttribute('data-group-id', data.group_id);
-                } else {
-                    console.error("Error adding group:", data.error);
-                    // Optionally show an error message
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("group added to specialization successfully");
+                        // Optionally show a success message
+                        newGroup.setAttribute('data-group-id', data.group_id);
+                    } else {
+                        console.error("Error adding group:", data.error);
+                        // Optionally show an error message
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
 
     }
