@@ -17,55 +17,83 @@ def generate_course_pdf(course_id):
     pdf = canvas.Canvas(pdf_buffer)
 
     # Step 3: Add course information to the PDF
-    pdf.setFont("Helvetica-Bold", 16)
-    pdf.drawString(100, 800, f"Course Title: {course_details['title']}")
-    pdf.setFont("Helvetica", 12)
-    pdf.drawString(100, 780, f"Course Code: {course_details['code']}")
-    pdf.drawString(100, 760, f"Description: {course_details['description'] or 'N/A'}")
+    pdf.setFont("Times-Bold", 20)
+    pdf.drawString(50, 800, f"{course_details['title']}")
+    pdf.setFont("Times-Roman", 12)
+    pdf.drawString(50, 780, f"Course Code: {course_details['code']}")
+    pdf.drawString(50, 760, f"Description: {course_details['description'] or 'N/A'}")
 
-    y_position = 740
+    y_position = 720
 
     # Step 4: Add Unit Sets, Groups, and Elements to the PDF
-    pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawString(100, y_position, "Unit Sets:")
+    pdf.setFont("Times-Bold", 16)
+    pdf.drawString(50, y_position, "Unit Sets:")
     y_position -= 20
-    pdf.setFont("Helvetica", 12)
+    pdf.setFont("Times-Roman", 14)
 
     for unit_set in course_details['unit_sets']:
-        pdf.drawString(100, y_position, f"Unit Set: {unit_set['title']}")
+        pdf.drawString(50, y_position, f"{unit_set['title']}")
         y_position -= 20
+        
 
         for group in unit_set['groups']:
-            pdf.drawString(120, y_position, f"{group['group_type']} - {group['note']}")
+            pdf.setFont("Times-Bold", 14)
+            
+            group_type = group['group_type'].lower()
+
+            # Set different background colors based on group_type
+            if group_type == 'core':
+                bg_color = (204/255, 207/255, 234/255)  # RGB for core background
+            elif group_type == 'option':
+                bg_color = (251/255, 244/255, 207/255)  # RGB for option background
+            elif group_type == 'customised':
+                bg_color = (206/255, 232/255, 253/255)  # RGB for customised background
+            elif group_type == 'conversion':
+                bg_color = (237/255, 213/255, 220/255)  # RGB for conversion background
+            else:
+                bg_color = (1, 1, 1)  # Default white background if no match
+            
+            # Draw a background rectangle (adjust size based on text length and position)
+            pdf.setFillColorRGB(*bg_color)
+            pdf.rect(50, y_position - 5, 490, 20, fill=1)  # Adjust rectangle width and height as needed
+            
+            # Set text color to black or any contrasting color
+            pdf.setFillColorRGB(0, 0, 0)
+            pdf.drawString(60, y_position, f"{group['group_type']} - {group['note']}")
+            
             y_position -= 20
 
+
+
             for element in group['group_elements']:
-                pdf.drawString(140, y_position, f"{element['unit_details']['name']} : {element['unit_details']['credit_point']}")
+                pdf.setFont("Times-Roman", 12)
+                pdf.setFillColorRGB(0, 0, 0)
+                pdf.drawString(80, y_position, f"• {element['unit_details']['name']} : {element['unit_details']['credit_point']}")
                 y_position -= 20
-                if y_position < 100:  # Check if the y_position is too low for the content
+                if y_position < 50:  # Check if the y_position is too low for the content
                     pdf.showPage()  # Add a new page
                     y_position = 800
 
     # Step 5: Add Specialisation information (if any)
     if course_details.get('specialisations'):
         y_position -= 20
-        pdf.setFont("Helvetica-Bold", 14)
-        pdf.drawString(100, y_position, "Specialisations:")
+        pdf.setFont("Times-Bold", 14)
+        pdf.drawString(50, y_position, "Specialisations:")
         y_position -= 20
-        pdf.setFont("Helvetica", 12)
+        pdf.setFont("Times-Roman", 12)
 
         for specialisation in course_details['specialisations']:
-            pdf.drawString(100, y_position, f"Specialisation: {specialisation['name']}")
+            pdf.drawString(50, y_position, f"Specialisation: {specialisation['name']}")
             y_position -= 20
 
             for group in specialisation['groups']:
-                pdf.drawString(120, y_position, f"{group['group_type']} - {group['note']}")
+                pdf.drawString(70, y_position, f"{group['group_type']} - {group['note']}")
                 y_position -= 20
 
                 for element in group['group_elements']:
-                    pdf.drawString(140, y_position, f"{element['unit_details']['name']} : {element['unit_details']['credit_point']}")
+                    pdf.drawString(90, y_position, f"{element['unit_details']['name']} : {element['unit_details']['credit_point']}")
                     y_position -= 20
-                    if y_position < 100:
+                    if y_position < 50:
                         pdf.showPage()
                         y_position = 800
 
