@@ -77,21 +77,47 @@ def generate_course_pdf(course_id):
     # Step 5: Add Specialisation information (if any)
     if course_details.get('specialisations'):
         y_position -= 20
-        pdf.setFont("Times-Bold", 14)
+        pdf.setFont("Times-Bold", 16)
         pdf.drawString(50, y_position, "Specialisations:")
         y_position -= 20
-        pdf.setFont("Times-Roman", 12)
+        pdf.setFont("Times-Roman", 14)
 
         for specialisation in course_details['specialisations']:
-            pdf.drawString(50, y_position, f"Specialisation: {specialisation['name']}")
+            pdf.drawString(50, y_position, f"{specialisation['name']}")
             y_position -= 20
 
             for group in specialisation['groups']:
+                pdf.setFont("Times-Bold", 14)
                 pdf.drawString(70, y_position, f"{group['group_type']} - {group['note']}")
+                group_type = group['group_type'].lower()
+
+                # Set different background colors based on group_type
+                if group_type == 'core':
+                    bg_color = (204/255, 207/255, 234/255)  # RGB for core background
+                elif group_type == 'option':
+                    bg_color = (251/255, 244/255, 207/255)  # RGB for option background
+                elif group_type == 'customised':
+                    bg_color = (206/255, 232/255, 253/255)  # RGB for customised background
+                elif group_type == 'conversion':
+                    bg_color = (237/255, 213/255, 220/255)  # RGB for conversion background
+                else:
+                    bg_color = (1, 1, 1)  # Default white background if no match
+                
+                # Draw a background rectangle (adjust size based on text length and position)
+                pdf.setFillColorRGB(*bg_color)
+                pdf.rect(50, y_position - 5, 490, 20, fill=1)  # Adjust rectangle width and height as needed
+                
+                # Set text color to black or any contrasting color
+                pdf.setFillColorRGB(0, 0, 0)
+                pdf.drawString(60, y_position, f"{group['group_type']} - {group['note']}")
+
+                
                 y_position -= 20
 
                 for element in group['group_elements']:
-                    pdf.drawString(90, y_position, f"{element['unit_details']['name']} : {element['unit_details']['credit_point']}")
+                    pdf.setFont("Times-Roman", 12)
+                    pdf.setFillColorRGB(0, 0, 0)
+                    pdf.drawString(80, y_position, f"• {element['unit_details']['name']} : {element['unit_details']['credit_point']}")
                     y_position -= 20
                     if y_position < 50:
                         pdf.showPage()
