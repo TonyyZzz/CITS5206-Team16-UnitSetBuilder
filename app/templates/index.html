@@ -12,12 +12,12 @@
     <!-- Including index.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <script src="/app/static/js/main.js"></script>  
+    <script src="/app/static/js/main.js"></script>
 </head>
 <body>
     <div id="greeting" class="greeting-message"></div>
     <!-- Curriculum Management System CAIDi Section -->
-     <div class="home-card">
+    <div class="home-card">
         <div class="app-name">
             <h1>Welcome To The Unit Set Builder App</h1>
             <p>Curriculum Management System ( CAIDI ) is a platform designed to streamline the administration of academic programs.
@@ -29,6 +29,6 @@
             <p>Overall, the Unit Set Builder app enhances the educational experience by streamlining administrative processes and fostering better communication among faculty and students.</p>
             <button class="home-button-links"><a href="{{ url_for('main.course') }}">Create A Unit Set Builder >> </a></button>
         </div>
-     </div>
+    </div>
     </body>
 {% endblock %}

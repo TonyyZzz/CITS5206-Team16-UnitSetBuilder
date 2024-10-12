@@ -16,7 +16,7 @@
 </head>
 <body>
     <!-- Main Page Content -->
-        <div class="progress-container"></div>
+        <div class="progress-container">
             <div class="progress-bar nav nav-tabs">
                 <div class="nav-item">
                     <a class="nav-link active" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
@@ -29,32 +29,33 @@
                 </div>
             </div>
         </div>
-        <h2 class="course-header">Select Course</h2>
 
         <!-- Card for Content -->
-        <div class="card p-3 position-relative">
-            <input id="search-input" type="search" class="form-control mb-3" placeholder="🔍 Search for a Course">
-            <div id="suggestions" class="list-group"></div>
-            <table class="table table-bordered mt-4">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>ID</th>
-                        <th>Code</th>
-                        <th>Title</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="unit-table">
-                    <!-- Table rows dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="my-4">
-            <!-- Update the button to navigate to unit_set.html -->
-            <button class="btn btn-primary" style="background-color: #28348B; border:none; float:right; font-size: 20px;margin-right:80px"  onclick="createUnitSetBuilder()"
-            ><a style="text-decoration: none; color: white;">Create Grouping ➜</a></button>
+        <div class="card d-flex flex-column" style="min-height: 30vh;">
+            <div class="p-3 flex-grow-1">
+                <input id="search-input" type="search" class="form-control mb-1" placeholder="🔍 Search for a Course">
+                <div id="suggestions" class="list-group"></div>
+                <table class="table table-bordered mt-2">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>ID</th>
+                            <th>Code</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unit-table">
+                        <!-- Table rows dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="my-4 text-center">
+                <button class="btn btn-primary create-btn" onclick="createUnitSetBuilder()" style="background-color: #28348B; border: none;">
+                    <a style="text-decoration: none; color: white;">Create Grouping ➜</a>
+                </button>
+            </div>
         </div>
     </div>
 

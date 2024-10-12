@@ -99,88 +99,97 @@ footer {
 
 /*  Started from here */
 
-.app-name{
-    border: #333;
-    font-size: large;
-    margin-top: 20px;
-    padding-right: 0%;
-    margin-left: 20px;
-    width: 90%;
-    /* text-align: center; */
+.app-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Ensure it takes the full width inside the home-card */
+    gap: 15px;
 }
 
-.home-card{
+.home-card, .greeting-message {
+    width: 80%; /* Set the same width for both */
+    margin: 20px auto; /* Center horizontally */
+}
+
+.home-card {
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
-    width:90%;
-    margin-left: 65px;
-    margin-top: 20px;
     display: flex;
-    margin-bottom: 50px;
     border: solid var(--header) 2px;
+    padding: 20px;
 }
 
-.greeting-message{
+.greeting-message {
     background-color: rgb(42, 102, 223);
-    color:white;
+    color: white;
     font-size: large;
-    margin: auto;
     font-weight: bold;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 90%;
+    padding: 10px 0;
     text-align: center;
-    margin-top: 20px;
 }
 
-.home-button-links{
-    display: block;
+.home-button-links {
     cursor: pointer;
-    padding: 6px 18px;
+    padding: 12px 30px;
     font-size: 17px;
     border: none;
     border-radius: 5px;
     background-color: rgb(42, 102, 223);
-    margin-bottom: 20px;
-    margin-left:400px;
-}
-
-.home-button-links a{
-    cursor: pointer;
-    font-size: 17px;
-    border: none;
-    border-radius: 5px;
+    display: flex; /* Center the content inside the button */
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
+}
+
+.home-button-links a {
+    font-size: 17px;
     color: white;
     text-decoration: none;
 }
+ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
 
 .progress-container {
-    margin-bottom: 20px;
     display: flex;
-    justify-content: center;   /* Center the contents horizontally */
+    justify-content: center; /* Center the progress-bar container horizontally */
     align-items: center;
-    margin-left: auto;
+    margin: 20px auto;
     max-width: 1120px;
-    margin-top: 20px;
+    width: 100%;
 }
 
-.progress-bar {   
+.progress-bar {
     display: flex;
-    flex-direction:row !important;
-    justify-content: space-between; 
-    max-width: 1120px;
+    flex-direction: row !important;
+    justify-content: space-between;
     align-items: center;
-    margin-left:75px;
+    width: 100%;
+    max-width: 1120px;
+    padding: 0;
+    list-style: none;
 }
+
 
 .nav-tabs {
     border-bottom: 1px solid #dddddd;
 }
 
 .nav-item {
-    flex: 1;
+    flex: 1; /* Ensure all items take equal space */
+    text-align: center; /* Center the text inside each nav-item */
 }
 
 .nav-link {
@@ -257,4 +266,10 @@ footer {
 .home-button-links:hover {
     background-color: var(--progress-bar); /* Change color on hover */
     transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.custom-card {
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
