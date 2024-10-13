@@ -73,14 +73,32 @@
     width: 15px;
 }
 
-/* Align the card to avoid extra spacing */
+.create-btn {
+    background-color: #28348B;
+    border: none;
+    font-size: 20px;
+    padding: 10px 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+.my-4 {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
 .card {
     background-color: #f8f9fa;
     border-radius: 8px;
-    margin-top: 20px;
+    margin: 20px auto;
     max-width: 1120px;
-    margin-left:80px
+    width: 80%;
+    position: relative;
+    padding-bottom: 80px;
 }
+
 
 /* Remove extra spacing between the top and navbar */
 .container {
