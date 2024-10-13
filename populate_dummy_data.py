@@ -1,7 +1,8 @@
-from werkzeug.security import generate_password_hash
+from flask_bcrypt import Bcrypt
 from app import create_app, db
 from app.models import User, Unit, Group, UnitSet, Specialisation, Course, GroupElement
 
+bcrypt = Bcrypt()
 
 def populate_dummy_data():
     # Create an application context
@@ -14,15 +15,11 @@ def populate_dummy_data():
             print("Database already has data. Skipping population.")
             return
 
-        # Create some dummy users with hashed passwords
-        user1 = User(username='test', email='test@test.com')
-        user1.set_password('test')  # Hash password using the set_password method
-
-        user2 = User(username='jane_smith', email='jane@example.com')
-        user2.set_password('password456')  # Hash password
+        # Create some dummy users with hashed passwords using Flask-Bcrypt
+        user1 = User(username='test', email='test@test.com', password_hash=bcrypt.generate_password_hash('test').decode('utf-8'))
 
         # Add users to the session
-        db.session.add_all([user1, user2])
+        db.session.add_all([user1])
 
         # Create dummy units with credit_points included
         unit1 = Unit(name='Mathematics 101', code='MATH101', description='Introduction to basic mathematics.',
@@ -75,8 +72,9 @@ def populate_dummy_data():
                        specialisation_id=spec2.id)
 
         db.session.add_all([group1, group2, group3])
+        db.session.commit()  # Commit again to ensure the groups get their IDs
 
-        # Optionally link units to groups, if that is part of the data structure (GroupElement)
+        # Now create GroupElements linked to groups
         group_element1 = GroupElement(group_id=group1.id, unit_id=unit1.id)
         group_element2 = GroupElement(group_id=group1.id, unit_id=unit5.id)
         group_element3 = GroupElement(group_id=group2.id, unit_id=unit2.id)
@@ -91,4 +89,5 @@ def populate_dummy_data():
 
 
 if __name__ == '__main__':
+    bcrypt.init_app(create_app('development'))  # Initialize Flask-Bcrypt
     populate_dummy_data()
