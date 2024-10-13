@@ -9,8 +9,11 @@ class Config:
 class DevelopmentConfig(Config):
     """Development environment configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///dev.db'
-    # You can add other development-specific settings here
+    uri = os.getenv('DATABASE_URL') or 'sqlite:///dev.db'
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = uri
+
 
 class TestingConfig(Config):
     """Testing environment configuration."""
