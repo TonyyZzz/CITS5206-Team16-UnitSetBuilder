@@ -1,17 +1,25 @@
-.grouping{
-    margin-left:20px;
-    margin-right:20px;
+.parent-container {
+    display: flex;
+    justify-content: center;
+    width: 98%;
 }
 
-.grouping-header{
+.grouping {
+    width: 80%;
+    max-width: 1120px;
+    margin: 0px;
+    padding: 0;
+}
+
+.grouping-header {
     color: var(--header);
     font-size: 20px;
     text-transform: uppercase;
-    margin-top:20px;
-    margin-left: 60px;
-    margin-bottom:20px;
+    margin: 20px 0; /* Remove margin-left and use vertical margins */
+    text-align: center; /* Center the header text */
     animation: fadeIn 0.5s ease-in-out;
 }
+
 
 .add-group-card {
     box-shadow: 0 4px 8px 0 rgba(3, 3, 3, 0.2);

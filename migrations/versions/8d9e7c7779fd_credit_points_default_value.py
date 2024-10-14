@@ -1,8 +1,8 @@
-"""empty message
+"""credit_points default value
 
-Revision ID: b827fd51a2e1
+Revision ID: 8d9e7c7779fd
 Revises: 
-Create Date: 2024-09-19 15:47:16.939729
+Create Date: 2024-10-14 02:07:40.531886
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b827fd51a2e1'
+revision = '8d9e7c7779fd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,7 +28,7 @@ def upgrade():
     op.create_table('specialisation',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=False),
-    sa.Column('code', sa.String(length=50), nullable=False),
+    sa.Column('code', sa.String(length=50), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
     sa.Column('outcome', sa.Text(), nullable=True),
     sa.Column('note', sa.Text(), nullable=True),
@@ -39,6 +39,7 @@ def upgrade():
     sa.Column('name', sa.String(length=255), nullable=False),
     sa.Column('code', sa.String(length=50), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('credit_points', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('code')
     )

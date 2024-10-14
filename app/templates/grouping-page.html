@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="{{ url_for('static', filename='js/grouping.js')
     }}"></script>
-    <div class="progress-container"></div>
+    <div class="progress-container">
             <div class="progress-bar nav nav-tabs">
                 <div class="nav-item">
                     <a href="{{ url_for('main.course') }}" class="nav-link completed" data-index="0">SELECT COURSE <i class="bi bi-1-circle-fill"></i></a>
@@ -21,12 +21,10 @@
                 <div class="nav-item">
                     <a class="nav-link" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
                 </div>
-                <div class="nav-item">
-                    <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
-                </div>
             </div>
-        </div>
+    </div>
 
+    <div class="parent-container">
     <div class="grouping">
         <!-- Dynamic Course Header -->
         <h2 class="grouping-header">{{ course.title }} [{{ course.code }}]</h2>
@@ -87,7 +85,7 @@
             <div class="course-heading-container">
                 <!-- Dynamic Course Header -->
                 <h2 class="course-card-header">{{ course.title }} [{{ course.code }}]</h2>
-                <a href="#file" class="download-button" download>Download<i class="fa-solid fa-circle-down"></i></a>
+                <a href="{{ url_for('output.download_course_pdf', course_id=course.id) }}" target="_blank" class="download-button">Preview<i class="fa-solid fa-circle-down"></i></a>
             </div>
             <div class="groups-card">
                 <div class="group-details-section">
@@ -122,6 +120,7 @@
                 {% endfor %}
             {% endif %}
         </div>
+    </div>
     </div>
 </body>
 {% endblock %}

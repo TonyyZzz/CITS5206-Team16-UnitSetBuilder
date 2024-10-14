@@ -8,7 +8,7 @@
 <script src="{{ url_for('static', filename='js/unit_set.js') }}"></script>
 
 
-<div class="progress-container"></div>
+<div class="progress-container">
 <div class="progress-bar nav nav-tabs">
     <div class="nav-item">
         <a href="{{ url_for('main.course') }}" class="nav-link completed" data-index="0">SELECT COURSE <i
@@ -20,9 +20,6 @@
     </div>
     <div class="nav-item">
         <a class="nav-link active" data-index="2">UNIT SET <i class="bi bi-3-circle-fill"></i></a>
-    </div>
-    <div class="nav-item">
-        <a class="nav-link" data-index="3">CONFIRM <i class="bi bi-4-circle-fill"></i></a>
     </div>
 </div>
 </div>
@@ -48,43 +45,45 @@
                 class="icon"> to adjust the order</p>
     </div>
 
-    <div class="unit-set">
-        <!-- Place holder for groups -->
-        {% for group in groups %}
-        <div class="unit-group {{group.group_type}}-unit" data-group-id="{{ group.id }}">
-            <div class="group-header">
-                <h3>{{ group.group_type }} unit</h3>
-                <div class="group-icons">
-                    <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon"
-                        draggable="true">
-                    <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
+        <div class="unit-set">
+            <!-- Place holder for groups -->
+            {% for group in groups %}
+            <div class="unit-group {{group.group_type}}-unit" data-group-id="{{ group.id }}">
+                <div class="group-header">
+                    <h3>{{ group.group_type }} unit</h3>
+                    <div class="group-icons">
+                        <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+                        <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
+                    </div>
                 </div>
-            </div>
-            <p>Take all units from this group (24 points)
-                <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
-            </p>
-            <!-- Units will be added here -->
-            {% for ele in group.group_elements %}
-            <div class="unit" data-key="{{ ele.id }}">
-                <span class="unit-name">{{ele.unit.name}} (ID: {{ele.unit.id}})</span>
-                <span class="unit-actions">
-                    {% if group.group_type == "core" %}
-                    <button class="capstone-btn">
-                        <img src="/static/image/{{ 'star' if ele.capstone_flag else 'unstar' }}.png"
-                            alt="{{ 'star' if ele.capstone_flag else 'Unstar' }} Icon">
-                    </button>
-                    {% endif %}
-                    <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
-                    <button class="remove-btn" data-unit-id="unit-{{ele.id}}"><img src="/static/image/delete_unit.png"
-                            alt="Remove Icon"></button>
-                </span>
+<p>Take all units from this group (<span class="points-value">24</span> points)
+    <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
+</p>
+<input type="text" class="edit-points-input" value="0" size="2" style="display:none;">
+
+
+
+                <!-- Units will be added here -->
+                {% for ele in group.group_elements %}
+                <div class="unit" data-key="{{ ele.id }}">
+                    <span class="unit-name">{{ele.unit.name}} (ID: {{ele.unit.id}})</span>
+                    <span class="unit-actions">
+                        {% if group.group_type == "core" %}
+                        <button class="capstone-btn">
+                            <img src="/static/image/{{ 'star' if ele.capstone_flag else 'unstar' }}.png"
+                                alt="{{ 'star' if ele.capstone_flag else 'Unstar' }} Icon">
+                        </button>
+                        {% endif %}
+                        <button class="move-btn"><img src="/static/image/drag_unit.png" alt="Move Icon"></button>
+                        <button class="remove-btn" data-unit-id="unit-{{ele.id}}"><img src="/static/image/delete_unit.png" alt="Remove Icon"></button>
+                    </span>
+                </div>
+                {% endfor %}
+                <img src="static/image/bin.png" alt="Delete Section Icon" class="bin-icon">
             </div>
             {% endfor %}
-            <img src="static/image/bin.png" alt="Delete Section Icon" class="bin-icon">
         </div>
-        {% endfor %}
     </div>
-</div>
 
 
 

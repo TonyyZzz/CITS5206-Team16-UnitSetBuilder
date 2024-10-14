@@ -62,3 +62,15 @@ def delete_unit():
     db.session.commit()
 
     return jsonify({'success': True, 'message': 'Unit deleted successfully'})
+
+
+@unit.route('/calculate_points/<int:group_id>', methods=['GET'])
+def calculate_points(group_id):
+    group = Group.query.get(group_id)
+    if not group:
+        return jsonify({'success': False, 'error': 'Group not found'}), 404
+
+    # Calculate the total points by summing the credit points of all units in this group
+    total_points = sum([element.unit.credit_points for element in group.group_elements])
+
+    return jsonify({'success': True, 'total_points': total_points})
