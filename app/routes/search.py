@@ -7,11 +7,21 @@ search = Blueprint('search', __name__)
 @search.route('/search', methods=['GET'])
 def search_units():
     query = request.args.get('query')
-    if query:
-        results = Unit.query.filter((Unit.id == query) | (Unit.name.ilike(f"%{query}%"))).all()
+
+    # Try to convert the query to an integer for id search
+    try:
+        query_as_int = int(query)
+    except ValueError:
+        query_as_int = None
+
+    # If the query is a valid integer, search by id and name
+    if query_as_int is not None:
+        results = Unit.query.filter((Unit.id == query_as_int) | (Unit.name.ilike(f"%{query}%"))).all()
     else:
-        results = []
-    return jsonify([{'id': unit.id, 'name': unit.name} for unit in results])
+        # Otherwise, only search by name
+        results = Unit.query.filter(Unit.name.ilike(f"%{query}%")).all()
+
+    return jsonify([result.to_dict() for result in results])
 
 # Route for course search
 @search.route('/search_courses', methods=['GET'])
