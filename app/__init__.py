@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from .config import Config
 from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS  # Import CORS
 # from flask_wtf import CSRFProtect
 
 # Initialize the extensions
@@ -12,6 +13,7 @@ migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 bcrypt = Bcrypt()
+
 # csrf = CSRFProtect()
 
 
@@ -29,6 +31,9 @@ def create_app(config_name):
     login_manager.init_app(app)
     bcrypt = Bcrypt(app)
     # csrf.init_app(app)
+
+    # Enable CORS
+    CORS(app)  # Add this line to enable CORS for the entire app
 
     # Require login for all routes except the login page
     @app.before_request
