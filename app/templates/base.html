@@ -24,6 +24,11 @@
         <h1>Unit Set Builder</h1>
         <nav class="top-navigation">
             <a href="{{ url_for('main.index') }}">Home</a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            {% endif %}
         </nav>
         <!-- Search and menu icon in the header -->
         <div class="fas fa-bars" id="menu-button"></div>     
