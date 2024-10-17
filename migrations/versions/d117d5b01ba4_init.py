@@ -1,8 +1,8 @@
-"""credit_points default value
+"""init
 
-Revision ID: 8d9e7c7779fd
+Revision ID: d117d5b01ba4
 Revises: 
-Create Date: 2024-10-14 02:07:40.531886
+Create Date: 2024-10-14 16:34:01.047859
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8d9e7c7779fd'
+revision = 'd117d5b01ba4'
 down_revision = None
 branch_labels = None
 depends_on = None

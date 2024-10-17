@@ -2,7 +2,7 @@
 import unittest
 from test_base import BaseTestCase
 
-class TestWelcomePage(BaseTestCase):
+class TestWelcomePage(BaseTestCase):    
     def test_welcome_page_loads(self):
         """Test if the welcome page loads successfully."""
         response = self.client.get('/')  # Simulate a GET request to the welcome page
