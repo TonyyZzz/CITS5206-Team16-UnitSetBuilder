@@ -182,24 +182,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-        // Event listener for making points editable when the edit icon is clicked
-    document.body.addEventListener("click", function (e) {
+  // Event listener for edit icon click
+    document.body.addEventListener("click", function(e) {
         if (e.target.closest(".edit-icon")) {
             const parent = e.target.closest("p");
+            const editableText = parent.querySelector(".editable-text");
             const pointsDisplay = parent.querySelector(".points-value");
-            const pointsInput = parent.nextElementSibling;  // Assuming the input follows the paragraph
+            const pointsInput = parent.nextElementSibling;
+
+            // Make text editable
+            editableText.contentEditable = true;
+            editableText.focus();
 
             // Hide the points span and show the input field
             pointsDisplay.style.display = "none";
             pointsInput.style.display = "inline";
-            pointsInput.focus();  // Focus on the input for editing
+            pointsInput.focus();
         }
     });
 
-    // Event listener to save the points when clicking outside the input field
-    document.body.addEventListener("click", function (e) {
-        if (!e.target.closest(".edit-points-input") && !e.target.closest(".edit-icon")) {
-            document.querySelectorAll(".edit-points-input").forEach(function (input) {
+    // Event listener to save the edited text and points when clicking outside
+    document.body.addEventListener("click", function(e) {
+        if (!e.target.closest(".editable-text") && !e.target.closest(".edit-points-input") && !e.target.closest(".edit-icon")) {
+            const editableTexts = document.querySelectorAll(".editable-text[contenteditable='true']");
+            const pointsInputs = document.querySelectorAll(".edit-points-input");
+
+            editableTexts.forEach(function(text) {
+                text.contentEditable = false;
+            });
+
+            pointsInputs.forEach(function(input) {
                 if (input.style.display === "inline") {
                     const pointsDisplay = input.previousElementSibling.querySelector(".points-value");
                     const newValue = input.value;

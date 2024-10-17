@@ -49,17 +49,19 @@
             <!-- Place holder for groups -->
             {% for group in groups %}
             <div class="unit-group {{group.group_type}}-unit" data-group-id="{{ group.id }}">
-                <div class="group-header">
-                    <h3>{{ group.group_type }} unit</h3>
-                    <div class="group-icons">
-                        <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
-                        <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
-                    </div>
-                </div>
-<p>Take all units from this group (<span class="points-value">24</span> points)
+ <div class="group-header">
+    <h3>{{ group.group_type }} unit</h3>
+    <div class="group-icons">
+        <img src="static/image/drag_group.png" alt="Drag Group Icon" class="drag-group-icon" draggable="true">
+        <img src="static/image/add_unit.png" alt="Add Unit Icon" class="add-unit-icon">
+    </div>
+</div>
+<p>
+    <span class="editable-text">Take all units from this group</span>
+    (<span class="points-value">24</span> points)
     <img src="static/image/edit.png" alt="Edit Icon" class="edit-icon">
 </p>
-<input type="text" class="edit-points-input" value="0" size="2" style="display:none;">
+<input type="text" class="edit-points-input" value="24" size="2" style="display:none;">
 
 
 

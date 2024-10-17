@@ -394,3 +394,7 @@ h2 {
     display: block; /* Show only the active stage content */
 }
 
+.editable-text[contenteditable='true'] {
+    border-bottom: 1px dashed #999;
+    padding: 2px;
+}
