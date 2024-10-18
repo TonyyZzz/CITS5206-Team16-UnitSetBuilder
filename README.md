@@ -12,7 +12,7 @@ The Unit Set Builder aims to address the challenges faced by our client, whose c
 - Create reusable specialisation where can be used by multiple courses
 - Drag and Drop to manage the sturcuture of the course
 
-### How to set up the application on you location machine
+### Set up application locally
 
 **1. Git Clone**
 
@@ -74,3 +74,24 @@ flask run
 ### Deployment
 
 The application is currently deployed using `Heroku`. To access the deployed website with this [link](https://unitsetbuilder-a33e3d2c8e96.herokuapp.com/). The detailed deployment steps refer to [User Manual](https://github.com/TonyyZzz/CITS5206-Team16-UnitSetBuilder/blob/main/deliverables/User_Manual.pdf).
+
+### Data Structure
+
+![ERD](deliverables/DataStructure.png)
+
+#### Entities:
+
+**Course**: Represents the overall course or degree program. It serves as the top-level entity in the system, managing the different programs offered.
+
+**UnitSet**: Represents a set of units that form part of a course structure. It could include core units, electives, or any other unit grouping required for the course.
+
+**Specialisation**: Represents a specialized track or focus within a course. It allows the system to define areas of concentration or expertise, such as a major or minor, that a student can pursue.
+
+**Group**: Represents a grouping mechanism used to organize units within a unit set. This table is unique in that it supports nested group structures, allowing groups to contain other sub-groups, which facilitates complex course requirements (e.g., organizing units into core and elective groups).
+
+**GroupElement**: Represents individual components within a group, typically linking units to the group. It helps to manage how units are structured within different groups, allowing for flags like research-based or capstone project indicators.
+
+**Unit**: Represents an individual course unit or subject, forming the basic building block of the course structure. Units are linked to groups via group elements to ensure flexible course configurations.
+
+**Note**: 
+`flask load` command is used to load data into `Course`, `Unit` tables from existing data stored in `csv` file.
