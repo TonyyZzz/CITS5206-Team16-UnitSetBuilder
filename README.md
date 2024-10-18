@@ -11,6 +11,7 @@ The Unit Set Builder aims to address the challenges faced by our client, whose c
 - Create and manage course structure (known as Unit Set)
 - Create reusable specialisation where can be used by multiple courses
 - Drag and Drop to manage the sturcuture of the course
+- Courses structure output to PDF format
 
 ### Set up application locally
 
